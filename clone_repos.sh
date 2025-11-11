@@ -111,25 +111,44 @@ echo "   - For Flask: pip install -r requirements.txt"
 echo "--------------------------------------------------"
 echo ">>> Done! Enjoy your Arch setup :)"
 # =========================================================================================================
+
 # Instructions:
 # - Save this as clone_repos.sh
 # - Make executable: chmod +x ~/dotfiles/clone_repos.sh
 # - Run: cd ~/dotfiles && ./clone_repos.sh
+
 # =========================================================================================================
+
 # Nvim configuration:
 # git clone https://github.com/Fawz-Haaroon/nvim ~/.config/nvim
 # cd ~/.config/nvim && chmod +x install.sh && bash ./install.sh
+
 # =========================================================================================================
+
 # Pacman progress bar:
 # To enable pacman candy progress bar:
 #   sudo nano /etc/pacman.conf
 #   Add under [options]:
 #       ILoveCandy
+
 # ===========================================================================================================
+
 # Chatgpt in terminal:
 # 1. Install the chat.py file in the home directory
 # 2. create a python environment like python -m venv chatgpt-env
 # 3. source it using source /home/ravi/chatgpt-env/bin/activate and install openai using pip install openai
 # 4. Make the chat.py executable using chmod +x chat.py
 # 5. Now the chat.py to use gpt in terminal using ./chat.py
+
 # ===========================================================================================================
+
+# fastfetch configuration:
+# 1. Clone the fastfetch configuration repo 
+#     cd ~/.local/share
+#     git clone https://github.com/LierB/fastfetch
+# 2. Download the iron2.png image from the git repo
+# 3. place the image in /home/user/.local/share/images/
+# 4. Open /home/user/.config/fastfetch/config.jsonc
+# 5. Paste the fastfetch config in there
+
+# ============================================================================================================
