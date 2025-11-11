@@ -139,6 +139,7 @@ echo ">>> Done! Enjoy your Arch setup :)"
 # 3. source it using source /home/ravi/chatgpt-env/bin/activate and install openai using pip install openai
 # 4. Make the chat.py executable using chmod +x chat.py
 # 5. Now the chat.py to use gpt in terminal using ./chat.py
+# 6. Change the API_KEY value when cloning zshrc config
 
 # ===========================================================================================================
 
