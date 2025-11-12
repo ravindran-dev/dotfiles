@@ -39,6 +39,7 @@ alias showimg='display_image'
 alias update='sudo pacman -Syu'
 alias la='ls -a'
 alias ll='ls -alh'
+alias cat='bat'
 
 # Git
 alias gs='git status'
