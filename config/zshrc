@@ -165,5 +165,31 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 export PATH="$PATH:/home/ravi/.local/bin"
 
 export OPENAI_KEY="API_KEY"
+
+typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(cpu_load ram battery time)
+
 source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(cpu_load ram battery time)
+
+
+
+# --- Long command notifier with sound ---
+notify_long_command() {
+  if (( SECONDS > 10 )); then
+    if [[ $? -eq 0 ]]; then
+      # ✅ Success
+      notify-send "✅ Command completed successfully in $SECONDS s" "$(fc -ln -1)"
+      canberra-gtk-play -i complete &
+    else
+      # ❌ Failure
+      notify-send "❌ Command failed after $SECONDS s" "$(fc -ln -1)"
+      canberra-gtk-play -i message-new-email &
+
+    fi
+  fi
+}
+
+preexec() { SECONDS=0 }
+precmd() { notify_long_command }
+
