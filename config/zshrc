@@ -1,4 +1,7 @@
- # Enable Powerlevel11k instant prompt. Should stay close to the top of ~/.zshrc.
+# =========================================
+# 🚀 Zsh Configuration by Ravindran S
+# For Arch Linux + Powerlevel10k setup
+# ======================================== # Enable Powerlevel11k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 fastfetch
@@ -6,20 +9,16 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If not running interactively, don't do anything
-#fastfetch --kitty-direct /home/ravi/Downloads/anime.png --logo-width 30 --logo-height 25
-#fastfetch --logo-padding 8 --logo-height 24 /home/ravi/Downloads/anime.png
 
 [[ $- != *i* ]] && return
-#fastfetch --kitty-direct /home/ravi/Downloads/anime.png --logo-width 30 --logo-height 25
-# Highlight root prompt
+
 plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
-source ${ZSH_CUSTOM:-~/.zsh}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ${ZSH_CUSTOM:-~/.zsh}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source ${ZSH_CUSTOM:-~/.zsh}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+#source ${ZSH_CUSTOM:-~/.zsh}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 autoload -Uz compinit
 compinit
@@ -30,15 +29,25 @@ zstyle ':completion:*' rehash true
 
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#888888'
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+#source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 alias cls='clear'
 alias sdn='shutdown now'
 alias ex='exit'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias showimg='display_image'
-#autoload -Uz vcs_info
-#zstyle ':vcs_info:git:*' formats '%F{magenta}(%b)%f'  # Color format for Git branch
+alias update='sudo pacman -Syu'
+alias la='ls -a'
+alias ll='ls -alh'
+
+# Git
+alias gs='git status'
+alias ga='git add .'
+alias gc='git commit -m'
+alias gp='git push'
+alias gl='git pull'
+alias gb='git branch'
+alias gd='git diff'
 
 precmd() { vcs_info }           # Update vcs_info before each prompt
 setopt prompt_subst             # Enable prompt string substitution for variables
@@ -46,23 +55,7 @@ setopt prompt_subst             # Enable prompt string substitution for variable
 autoload -Uz vcs_info
 precmd() { vcs_info }
 
-#zstyle ':vcs_info:git:*' formats " %b"
-#zstyle ':vcs_info:*' enable git
 
-#PS1='%F{yellow}%D{%H:%M}%f ⚡ %F{cyan}%n@%m %~%f ${vcs_info_msg_0_} %# '
-# Load vcs_info
-#autoload -Uz vcs_info
-#precmd() { vcs_info }
-
-# Branch name with icon and colors
-#zstyle ':vcs_info:git:*' formats "%F{magenta}  %b %f"
-#zstyle ':vcs_info:git:*' actionformats "%F{red}  %b|%a %f"
-
-# Enable git
-#zstyle ':vcs_info:*' enable git
-
-# Your prompt
-#PS1='%F{yellow}%D{%H:%M}%f ⚡ %F{cyan}%n@%m %~%f ${vcs_info_msg_0_} %# '
 
 autoload -Uz vcs_info
 autoload -U colors && colors
@@ -146,8 +139,6 @@ setopt autoparamslash # auto add slash in paths
 
 
 
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.powerlevel10k/powerlevel10k.zsh-theme
 
 display_image() {
     if command -v chafa &> /dev/null; then
@@ -159,6 +150,8 @@ display_image() {
     fi
 }
 
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -171,3 +164,5 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 export PATH="$PATH:/home/ravi/.local/bin"
 
 export OPENAI_KEY="API_KEY"
+source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
