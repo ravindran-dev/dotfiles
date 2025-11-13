@@ -120,6 +120,9 @@ This configuration is open-sourced under the MIT License.
 Feel free to fork, modify, or reuse with credit.
 
 # Author
+<a target="_blank" align="center">
+  <img align="right" top="500" height="200" width="200" alt="GIF" src="https://media.tenor.com/IieZUsqoYCwAAAAM/developer.gif">
+</a>
 
 - [Ravindran S](https://github.com/ravindran-dev)
 - Arch Linux • Zsh • Powerlevel10k • Automation & ML Developer
