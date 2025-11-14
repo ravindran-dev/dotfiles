@@ -1,7 +1,7 @@
 # Arch Linux Setup
 
 A fast, clean, and modern **Zsh configuration** built for Arch Linux users.  
-This setup includes **Powerlevel10k**, performance optimizations, system hooks, and developer productivity tools.
+This setup includes **Powerlevel10k**, **tmux**, **fastfetch**, **kitty** performance optimizations, system hooks, and developer productivity tools.
 
 ---
 
@@ -102,7 +102,7 @@ chmod +x clone_repos.sh
 
 - Enables Snap support
 
-- Installs Zsh plugins:
+- Installs Zsh plugins
 
 - Powerlevel10k
 
@@ -121,8 +121,11 @@ Feel free to fork, modify, or reuse with credit.
 
 # Author
 <a target="_blank" align="center">
-  <img align="right" top="500" height="200" width="200" alt="GIF" src="https://media.tenor.com/IieZUsqoYCwAAAAM/developer.gif">
+  <img align="right" top="500" right="50" height="200" width="200" alt="GIF" src="https://media.tenor.com/IieZUsqoYCwAAAAM/developer.gif">
 </a>
 
 - [Ravindran S](https://github.com/ravindran-dev)
-- Arch Linux • Zsh • Powerlevel10k • Automation & ML Developer
+-  SDE
+-  FSD 
+-  ML Developer
+-  Arch Linux
