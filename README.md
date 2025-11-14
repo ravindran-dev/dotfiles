@@ -27,7 +27,7 @@ This setup includes **Powerlevel10k**, **tmux**, **fastfetch**, **kitty** perfor
   - `zoxide` for smart directory navigation
   - `fzf` for fuzzy search
 
-
+- **Chatgpt in terminal** - you can use chatgpt in your zsh terminal using chat.py script and the embedding keys of openai. 
 
 ## Installation
 
@@ -36,6 +36,8 @@ This setup includes **Powerlevel10k**, **tmux**, **fastfetch**, **kitty** perfor
 ```bash
 sudo pacman -S zsh git libnotify libcanberra
 paru -S exa bat fzf zoxide fastfetch ttf-meslo-nerd-font-powerlevel10k
+python -m venv chatgpt-env
+pip install openai
 ```
 
 ### 2. Clone repositories
