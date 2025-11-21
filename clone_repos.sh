@@ -57,26 +57,12 @@ if ! command -v paru &> /dev/null; then
 fi
 paru -S brave-bin
 
-echo ">>> Installing Visual Studio Code..."
-yay -S visual-studio-code-bin
 
 echo ">>> Installing Google Chrome..."
 yay -S google-chrome
 
 echo ">>> Installing Spotify..."
 yay -S spotify
-
-# -----------  SNAP SUPPORT -----------
-echo ">>> Installing snapd..."
-yay -S --noconfirm snapd
-sudo systemctl enable --now snapd.socket
-
-if [ ! -e /snap ]; then
-    sudo ln -s /var/lib/snapd/snap /snap
-fi
-
-snap version
-sudo snap install hello-world
 
 # -----------  SHELL CONFIG (ZSH + POWERLEVEL10K) -----------
 echo ">>> Cloning Powerlevel10k and Zsh plugins..."
@@ -120,7 +106,7 @@ echo ">>> Done! Enjoy your Arch setup :)"
 # =========================================================================================================
 
 # Nvim configuration:
-# cd ~/.config/nvim 
+# cd ~/.config/nvim
 # git clone https://github.com/ravindran-dev/nvim.git
 # Open nvim (where it automatically installs the plugins)
 # Now do :Lazy sync to sync the packages
@@ -147,7 +133,7 @@ echo ">>> Done! Enjoy your Arch setup :)"
 # ===========================================================================================================
 
 # fastfetch configuration:
-# 1. Clone the fastfetch configuration repo 
+# 1. Clone the fastfetch configuration repo
 #     cd ~/.local/share
 #     git clone https://github.com/LierB/fastfetch
 # 2. Download the iron2.png image from the git repo
