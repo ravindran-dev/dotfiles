@@ -120,8 +120,11 @@ echo ">>> Done! Enjoy your Arch setup :)"
 # =========================================================================================================
 
 # Nvim configuration:
-# git clone https://github.com/Fawz-Haaroon/nvim ~/.config/nvim
-# cd ~/.config/nvim && chmod +x install.sh && bash ./install.sh
+# cd ~/.config/nvim 
+# git clone https://github.com/ravindran-dev/nvim.git
+# Open nvim (where it automatically installs the plugins)
+# Now do :Lazy sync to sync the packages
+# Also do :Mason for better language synchronisation
 
 # =========================================================================================================
 
