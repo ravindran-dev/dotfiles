@@ -1,9 +1,7 @@
-# =========================================
-# 🚀 Zsh Configuration by Ravindran S
+
+# Zsh Configuration by Ravindran S
 # For Arch Linux + Powerlevel10k setup
-# ======================================== # Enable Powerlevel11k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+
 fastfetch
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -50,8 +48,8 @@ alias gl='git pull'
 alias gb='git branch'
 alias gd='git diff'
 
-precmd() { vcs_info }           # Update vcs_info before each prompt
-setopt prompt_subst             # Enable prompt string substitution for variables
+precmd() { vcs_info }
+setopt prompt_subst
 
 autoload -Uz vcs_info
 precmd() { vcs_info }
@@ -61,52 +59,52 @@ precmd() { vcs_info }
 autoload -Uz vcs_info
 autoload -U colors && colors
 
- #--- Git branch name with icon and colors ---
+
 zstyle ':vcs_info:git:*' formats "%F{magenta}   %b%f"
 zstyle ':vcs_info:git:*' actionformats "%F{red}   %b|%a%f"
 zstyle ':vcs_info:*' enable git
 
-# --- Symbols for rotating cursor ---
 
-# --- Symbol cycle (1-indexed in zsh) ---
+
+
 typeset -ga symbols=( "󱞩" "󱞩" "󱞩" "󱞩" "󱞩" "󱞩" )
 typeset -gi idx=1
 
-# --- precmd hook (runs before each prompt) ---
+
 precmd() {
-  # Main prompt (user@host path
+
   vcs_info
   PROMPT="
 %F{yellow}%D{%H:%M}%f %F{cyan}%n@%m %F{blue}%~%f ${vcs_info_msg_0_}
 %F{magenta}${symbols[$idx]}%f "
-  # Rotate index safely (1…N wrap)
+
   (( idx = (idx % ${#symbols[@]}) + 1 ))
 }
 
 
 
-# --- Run once at shell startup to fix missing first symbol ---
+
 precmd
 
-# Note: bind used instead of sticking these in .inputrc
+
 if [[ $interactiveShellTest > 0 ]]; then bind "set completion-ignore-case on"; fi
 
-# Improve history behavior
-setopt APPEND_HISTORY       # Append history instead of overwriting
-setopt SHARE_HISTORY        # Share history across multiple terminals
+
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
-setopt INC_APPEND_HISTORY   # Add commands to history immediately
+setopt INC_APPEND_HISTORY
 
-HISTFILE=~/.zsh_history    # History file path
-HISTSIZE=1000              # Number of commands to keep in memory
-SAVEHIST=1000              # Number of commands to save in the file
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
 
-# Bind up/down arrows to search history based on current typed text
+
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 
 
-# Up/Down search by what you typed
+
 bindkey '^[[A' history-beginning-search-backward
 bindkey '^[[B' history-beginning-search-forward
 
@@ -117,11 +115,11 @@ bindkey "${terminfo[kcuu1]}" backward-history
 bindkey "${terminfo[kcud1]}" forward-history
 autoload -U compinit
 compinit
-# Case-insensitive and partial completion
+
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' menu selec
 
-# Group results and add colors
+
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
 zstyle ':completion:*:messages' format '%F{red}-- %d --%f'
@@ -129,14 +127,13 @@ zstyle ':completion:*:warnings' format '%F{red}no matches for: %d%f'
 zstyle ':completion:*:corrections' format '%F{green}[%d]%f'
 
 
-# Ignore case
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-# Correct minor typos
+
 setopt correct_all
 
-setopt auto_cd        # just type folder name to cd
-setopt auto_pushd     # keeps directory stack
-setopt autoparamslash # auto add slash in paths
+setopt auto_cd
+setopt auto_pushd
+setopt autoparamslash
 
 
 
@@ -155,18 +152,16 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
-# Created by `pipx` on 2025-09-01 06:19:26
 export PATH="$PATH:/home/ravi/.local/bin"
 
 export OPENAI_KEY="API_KEY"
 
-#typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(cpu_load ram battery time)
 
 source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -174,15 +169,15 @@ source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 
 
 
-# --- Long command notifier with sound ---
+
 notify_long_command() {
   if (( SECONDS > 10 )); then
     if [[ $? -eq 0 ]]; then
-      # ✅ Success
+
       notify-send "✅ Command completed successfully in $SECONDS s" "$(fc -ln -1)"
       canberra-gtk-play -i complete &
     else
-      # ❌ Failure
+
       notify-send "❌ Command failed after $SECONDS s" "$(fc -ln -1)"
       canberra-gtk-play -i message-new-email &
 
