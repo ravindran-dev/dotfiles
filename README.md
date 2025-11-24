@@ -1,9 +1,12 @@
-# Arch Linux Setup
+<p align="center">
+  <img src="https://img.shields.io/badge/Arch%20Linux-Custom%20Setup-blueviolet?style=for-the-badge" />
+</p>
 
-A fast, clean, and modern **Zsh configuration** built for Arch Linux users.  
-This setup includes **Powerlevel10k**, **tmux**, **fastfetch**, **kitty** performance optimizations, system hooks, and developer productivity tools.
 
----
+
+<h3 align="center"> A fast, clean, and modern Zsh configuration built for Arch Linux users.  
+This setup includes Powerlevel10k, tmux, fastfetch, kitty performance optimizations, system hooks, and developer productivity tools. </h3>
+
 
 
 
@@ -54,14 +57,14 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 This repository contains many components:
 
-1. `clone_repos.sh` – an automated Arch Linux setup script that installs essential system tools, development utilities, AUR helpers, browsers, themes, and configuration plugins.
+1. `Autosetup.sh` – an automated Arch Linux setup script that installs essential system tools, development utilities, AUR helpers, browsers, themes, and configuration plugins.
 2. `.zshrc` + supporting files – a fully customized Zsh configuration adapted for fast performance, developer productivity, and Powerlevel10k integration.
 
 This repository helps you quickly restore your development environment after a system reset.
 
 ---
 
-# 2. **clone_repos.sh** – Arch Linux Setup Script
+# 2. **Autosetup.sh** – Arch Linux Setup Script
 
 ##  Overview
 
