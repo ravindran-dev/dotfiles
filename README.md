@@ -122,7 +122,7 @@ chmod +x clone_repos.sh
 # License
 
 This configuration is open-sourced under the MIT License.
-Feel free to fork, modify, or reuse with credit.
+Feel free to fork, modify.
 
 # Author
 <a target="_blank" align="center">
