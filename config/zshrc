@@ -1,7 +1,10 @@
-
+# =========================================
 # Zsh Configuration by Ravindran S
 # For Arch Linux + Powerlevel10k setup
-
+# ========================================
+# Enable Powerlevel11k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
 fastfetch
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -39,6 +42,7 @@ alias la='ls -a'
 alias ll='ls -alh'
 alias cat='bat'
 alias chatgpt='chmod +x chat.py && ./chat.py'
+alias metrics= 'sys'
 # Git
 alias gs='git status'
 alias ga='git add .'
@@ -50,7 +54,6 @@ alias gd='git diff'
 
 precmd() { vcs_info }
 setopt prompt_subst
-
 autoload -Uz vcs_info
 precmd() { vcs_info }
 
@@ -59,50 +62,38 @@ precmd() { vcs_info }
 autoload -Uz vcs_info
 autoload -U colors && colors
 
-
 zstyle ':vcs_info:git:*' formats "%F{magenta}   %b%f"
 zstyle ':vcs_info:git:*' actionformats "%F{red}   %b|%a%f"
 zstyle ':vcs_info:*' enable git
 
 
-
-
 typeset -ga symbols=( "󱞩" "󱞩" "󱞩" "󱞩" "󱞩" "󱞩" )
 typeset -gi idx=1
 
-
 precmd() {
-
   vcs_info
   PROMPT="
 %F{yellow}%D{%H:%M}%f %F{cyan}%n@%m %F{blue}%~%f ${vcs_info_msg_0_}
 %F{magenta}${symbols[$idx]}%f "
-
   (( idx = (idx % ${#symbols[@]}) + 1 ))
 }
 
 
 
-
 precmd
 
-
 if [[ $interactiveShellTest > 0 ]]; then bind "set completion-ignore-case on"; fi
-
 
 setopt APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt INC_APPEND_HISTORY
-
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=1000
 
-
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
-
 
 
 bindkey '^[[A' history-beginning-search-backward
@@ -115,10 +106,8 @@ bindkey "${terminfo[kcuu1]}" backward-history
 bindkey "${terminfo[kcud1]}" forward-history
 autoload -U compinit
 compinit
-
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' menu selec
-
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
@@ -128,14 +117,27 @@ zstyle ':completion:*:corrections' format '%F{green}[%d]%f'
 
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-
 setopt correct_all
 
 setopt auto_cd
 setopt auto_pushd
 setopt autoparamslash
 
+sys() {
 
+    echo "Activating virtual environment..."
+
+    if [ -f "/home/ravi/sys/bin/activate" ]; then
+        source /home/ravi/sys/bin/activate
+        echo "Environment activated. Starting application..."
+
+        sysdash
+        deactivate
+        echo "Application stopped and venv deactivated."
+    else
+        echo "Error: venv/bin/activate not found. Are you in the right directory?"
+    fi
+}
 
 
 display_image() {
@@ -152,21 +154,18 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
-
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
-
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
 export PATH="$PATH:/home/ravi/.local/bin"
 
-export OPENAI_KEY="API_KEY"
+export OPENAI_KEY="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"
 
+#typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(cpu_load ram battery time)
 
 source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-#typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(cpu_load ram battery time)
-
 
 
 
@@ -174,11 +173,11 @@ notify_long_command() {
   if (( SECONDS > 10 )); then
     if [[ $? -eq 0 ]]; then
 
-      notify-send "✅ Command completed successfully in $SECONDS s" "$(fc -ln -1)"
+      notify-send "Command completed successfully in $SECONDS s" "$(fc -ln -1)"
       canberra-gtk-play -i complete &
     else
 
-      notify-send "❌ Command failed after $SECONDS s" "$(fc -ln -1)"
+      notify-send "Command failed after $SECONDS s" "$(fc -ln -1)"
       canberra-gtk-play -i message-new-email &
 
     fi
@@ -188,3 +187,6 @@ notify_long_command() {
 preexec() { SECONDS=0 }
 precmd() { notify_long_command }
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
