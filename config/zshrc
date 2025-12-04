@@ -38,7 +38,7 @@ alias update='sudo pacman -Syu'
 alias la='ls -a'
 alias ll='ls -alh'
 alias cat='bat'
-
+alias chatgpt='chmod +x chat.py && ./chat.py'
 # Git
 alias gs='git status'
 alias ga='git add .'

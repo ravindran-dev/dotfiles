@@ -128,6 +128,7 @@ echo ">>> Done! Enjoy your Arch setup :)"
 # 4. Make the chat.py executable using chmod +x chat.py
 # 5. Now the chat.py to use gpt in terminal using ./chat.py
 # 6. Change the API_KEY value when cloning zshrc config
+# 7. Add alias for the chat.py to execute using "alias chatgpt = 'chmod +x chat.py && ./chat.py'"
 
 # ===========================================================================================================
 
