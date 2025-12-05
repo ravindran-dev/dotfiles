@@ -68,7 +68,7 @@ This repository helps you quickly restore your development environment after a s
 
 ##  Overview
 
-`clone_repos.sh` automates the initial post-installation setup on Arch Linux.  
+`Autosetup.sh` automates the initial post-installation setup on Arch Linux.  
 It includes:
 
 - System update and mirrorlist refresh  
@@ -87,8 +87,8 @@ This script is intended to automate and standardize your Arch environment setup.
 ## Usage
 
 ```bash
-chmod +x clone_repos.sh
-./clone_repos.sh
+chmod +x Autosetup.sh
+./Autosetup.sh
 ```
 
 ## Features
