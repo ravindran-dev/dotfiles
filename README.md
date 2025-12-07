@@ -11,6 +11,7 @@ This setup includes Powerlevel10k, tmux, fastfetch, kitty performance optimizati
 
 
 # 1. Zsh and other configurations
+The fully customized ready to use configurations like zsh, fastfetch, tmux and kitty.
 ## Features
 
 <a target="_blank" align="center">
@@ -53,7 +54,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-sy
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 ```
-# System Setup
+#@ System Setup
 
 This repository contains many components:
 
@@ -64,7 +65,7 @@ This repository helps you quickly restore your development environment after a s
 
 ---
 
-# 2. **Autosetup.sh** – Arch Linux Setup Script
+## 2. **Autosetup.sh** – Arch Linux Setup Script
 
 ##  Overview
 
@@ -119,12 +120,12 @@ chmod +x Autosetup.sh
 
 - Installs GitHub CLI and prompts authentication
 
-# License
+## License
 
 This configuration is open-sourced under the MIT License.
 Feel free to fork, modify.
 
-# Author
+## Author
 <a target="_blank" align="center">
   <img align="right" top="500" right="50" height="200" width="200" alt="GIF" src="https://media.tenor.com/IieZUsqoYCwAAAAM/developer.gif">
 </a>
@@ -134,3 +135,23 @@ Feel free to fork, modify.
 -  FSD 
 -  ML Developer
 -  Arch Linux
+
+## 🔗 Connect With Me
+
+You can reach me here:
+
+###  **Socials**
+<a href="www.linkedin.com/in/ravindran-s-982702327" target="_blank">
+  <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white">
+</a>
+
+
+<a href="https://github.com/ravindran-dev" target="_blank">
+  <img src="https://img.shields.io/badge/GitHub-111111?style=for-the-badge&logo=github&logoColor=white">
+</a>
+
+
+###  **Contact**
+<a href="mailto:ravindrans.dev@gmail.com" target="_blank">
+  <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white">
+</a>
