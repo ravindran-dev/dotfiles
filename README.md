@@ -54,7 +54,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-sy
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 ```
-#@ System Setup
+## System Setup
 
 This repository contains many components:
 
