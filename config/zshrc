@@ -41,7 +41,7 @@ alias update='sudo pacman -Syu'
 alias la='ls -a'
 alias ll='ls -alh'
 alias cat='bat'
-alias chatgpt='chmod +x chat.py && ./chat.py'
+alias chatgpt='source /home/ravi/chatgpt-env/bin/activate && chmod +x chat.py && ./chat.py'
 alias metrics= 'sys'
 # Git
 alias gs='git status'
@@ -160,7 +160,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 export PATH="$PATH:/home/ravi/.local/bin"
 
-export OPENAI_KEY="API_KEY"                    # add your api key here
+export OPENAI_KEY="API_KEY"
 
 #typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(cpu_load ram battery time)
 
@@ -190,3 +190,4 @@ precmd() { notify_long_command }
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
