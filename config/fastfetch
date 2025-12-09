@@ -5,7 +5,7 @@
 
     "logo": {
     	"source": "~/.local/share/fastfetch/images/iron2.png",
-    	"type": "kitty",
+    	"type": "kitty-icat",
     	"height": 18,
     	"padding": {
     		"top": 4
@@ -32,7 +32,7 @@
         {
             "type": "os",
             "key": " ",
-            "keyColor": "34",  
+            "keyColor": "34",
         },
         {
             "type": "kernel",
@@ -128,3 +128,4 @@
         "break",
     ]
 }
+

@@ -141,4 +141,7 @@ echo ">>> Done! Enjoy your Arch setup :)"
 # 4. Open /home/user/.config/fastfetch/config.jsonc
 # 5. Paste the fastfetch config in there
 
-# ============================================================================================================
+# ===========================================================================================================
+# Tmux configuration:
+# 1. Follow the instructions given in the readme file of the tmux github repository
+# 2. open the github repository https://github.com/ravindran-dev/tmux.git
