@@ -2,7 +2,9 @@
 # Zsh Configuration by Ravindran S
 # For Arch Linux + Powerlevel10k setup
 # ========================================
-
+# Enable Powerlevel11k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
 fastfetch
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -170,14 +172,11 @@ source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 notify_long_command() {
   if (( SECONDS > 10 )); then
     if [[ $? -eq 0 ]]; then
-
       notify-send "Command completed successfully in $SECONDS s" "$(fc -ln -1)"
-      canberra-gtk-play -i complete &
+      canberra-gtk-play -i complete >/dev/null 2>&1 &!
     else
-
       notify-send "Command failed after $SECONDS s" "$(fc -ln -1)"
-      canberra-gtk-play -i message-new-email &
-
+      canberra-gtk-play -i message-new-email >/dev/null 2>&1 &!
     fi
   fi
 }
