@@ -5,13 +5,13 @@
 
 
 <h3 align="center"> A fast, clean, and modern Zsh configuration built for Arch Linux users.  
-This setup includes Powerlevel10k, tmux, fastfetch, kitty performance optimizations, system hooks, and developer productivity tools. </h3>
+This setup includes fastfetch, kitty and zsh performance optimizations, system hooks, and developer productivity tools. </h3>
 
 
 
 
 # 1. Zsh and other configurations
-The fully customized ready to use configurations like zsh, fastfetch, tmux and kitty.
+The fully customized ready to use configurations like zsh, fastfetch and kitty.
 ## Features
 
 <a target="_blank" align="center">
@@ -51,7 +51,6 @@ source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 ```
 ## System Setup
@@ -80,7 +79,7 @@ It includes:
 - Editor installation (VS Code)  
 - Multimedia tools (Spotify)  
 - Snapd setup  
-- Powerlevel10k, Zsh plugins, and Tmux Plugin Manager installation  
+- Powerlevel10k and Zsh plugins. 
 - GitHub CLI integration and login prompt  
 
 This script is intended to automate and standardize your Arch environment setup.
@@ -88,13 +87,13 @@ This script is intended to automate and standardize your Arch environment setup.
 ## Usage
 
 ```bash
-chmod +x Autosetup.sh
-./Autosetup.sh
+chmod +x autosetup.sh
+./autosetup.sh
 ```
 
 ## Features
 
-- Updates system packages (pacman -Syu)
+- Updates system packages
 
 - Adds and refreshes Arch mirrorlist
 
@@ -115,8 +114,6 @@ chmod +x Autosetup.sh
 - zsh-autosuggestions
 
 - zsh-syntax-highlighting
-
-- Installs Tmux Plugin Manager (TPM)
 
 - Installs GitHub CLI and prompts authentication
 
