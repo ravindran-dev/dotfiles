@@ -2,9 +2,7 @@
 # Zsh Configuration by Ravindran S
 # For Arch Linux + Powerlevel10k setup
 # ========================================
-# Enable Powerlevel11k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+
 fastfetch
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -52,6 +50,8 @@ alias gl='git pull'
 alias gb='git branch'
 alias gd='git diff'
 
+
+: <<'END_COMMENT'
 precmd() { vcs_info }
 setopt prompt_subst
 autoload -Uz vcs_info
@@ -78,9 +78,8 @@ precmd() {
   (( idx = (idx % ${#symbols[@]}) + 1 ))
 }
 
-
-
 precmd
+END_COMMENT
 
 if [[ $interactiveShellTest > 0 ]]; then bind "set completion-ignore-case on"; fi
 
@@ -160,7 +159,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 export PATH="$PATH:/home/ravi/.local/bin"
 
-export OPENAI_KEY="API_KEY"
+export OPENAI_KEY="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"
 
 #typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(cpu_load ram battery time)
 
