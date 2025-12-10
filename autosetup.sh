@@ -18,8 +18,6 @@ sudo pacman -Syu --noconfirm
 
 
 echo ">>> Installing mirrorlist..."
-sudo cp -rf /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
-sudo cp -rf ~/Downloads/mirrorlist /etc/pacman.d/mirrorlist
 sudo pacman -Syu
 
 
@@ -91,14 +89,15 @@ echo "✔ Open tmux and press prefix + I to install plugins."
 echo
 echo " After setup, consider:"
 echo "   - cd into each repo & install dependencies"
-echo "   - For React: npm install"
-echo "   - For Flask: pip install -r requirements.txt"
+echo "   - Download the mirrorlist from the github repo and save it in Downloads and use the below commands to activate"
+echo "   - sudo cp -rf /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak"
+echo "   - sudo cp -rf ~/Downloads/mirrorlist /etc/pacman.d/mirrorlist"
 echo "--------------------------------------------------"
-echo ">>> Done! Enjoy your Arch setup :)"
+echo " Done! Enjoy your Arch setup :)"
 # =========================================================================================================
 
 # Instructions:
-# - Save this as clone_repos.sh
+# - Save this as autosetups.sh
 # - Make executable: chmod +x ~/dotfiles/autosetup.sh
 # - Run: cd ~/dotfiles && ./autosetup.sh
 
