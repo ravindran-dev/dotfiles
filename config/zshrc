@@ -159,7 +159,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 export PATH="$PATH:/home/ravi/.local/bin"
 
-export OPENAI_KEY="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"
+export OPENAI_KEY="API_KEY"
 
 #typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(cpu_load ram battery time)
 
