@@ -1,131 +1,152 @@
 
 
+
 {
     "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
 
     "logo": {
     	"source": "~/.local/share/fastfetch/images/iron2.png",
     	"type": "kitty-icat",
-    	"height": 18,
+    	"height": 15,
     	"padding": {
-    		"top": 4
+    		"top": 2
     	}
     },
 
+
     "display": {
-        "separator": " "
+        "separator": "",
+        "constants": [
+        // Vertical rails: left │ + 61 spaces + right │, then rewind 61
+        "\u001b[90m│                                                             │\u001b[61D\u001b[39m"
+        ]
     },
+
     "modules": [
-	"break",
-
-
-	{
-            "type": "custom",
-            "format": "\u001b[90m  \u001b[31m  \u001b[32m  \u001b[33m  \u001b[34m  \u001b[35m  \u001b[36m  \u001b[37m "
-        },
-	"break",
-	{
-            "type": "title",
-            "keyWidth": 10
-        },
-        "break",
-        {
-            "type": "os",
-            "key": " ",
-            "keyColor": "34",
-        },
-        {
-            "type": "kernel",
-            "key": " ",
-            "keyColor": "34",
-        },
-        {
-            "type": "cpu",
-            "format": "{1} ({3}) @ {7} GHz",
-            "key": " ",
-            "keyColor": "34",
-        },
-        {
-            "type": "gpu",
-            "format": "{1} {2} @ {12} GHz",
-            "key": "󰢮 ",
-            "keyColor": "34",
-        },
-        {
-            "type": "memory",
-            "key": " ",
-            "keyColor": "34",
-        },
-        {
-            "type": "disk",
-            "key": "󰋊 ",
-            "keyColor": "34",
-        },
-        {
-            "type": "monitor",
-            "key": " ",
-            "keyColor": "34",
-        },
-        {
-            "type": "packages",
-            "format": "{} (pacman)",
-            "key": " ",
-            "keyColor": "34",
-        },
-        {
-            "type": "shell",
-            "key": " ",
-            "keyColor": "34",
-        },
-        {
-            "type": "terminal",
-            "key": " ",
-            "keyColor": "34",
-        },
-        {
-            "type": "wm",
-            "key": " ",
-            "keyColor": "34",
-        },
+        "break", // ✅ pushes info box down by 1 row for perfect alignment
 
         {
-            "type": "cursor",
-            "key": " ",
-            "keyColor": "34",
+        "type": "custom",
+        "key": "{#90}╭─────────────╮",
+        "format": "{#90}╭─────────────────────────────────────────────────────────────╮"
         },
         {
-            "type": "terminalfont",
-            "key": " ",
-            "keyColor": "34",
+        "type": "title",
+        "key": "{#90}│ {#92}User        {#90}│",
+        "format": "{$1}\u001b[38;2;122;162;247m{user-name}\u001b[39m  [home:{home-dir}]"
         },
         {
-            "type": "uptime",
-            "key": " ",
-            "keyColor": "34",
+        "type": "users",
+        "key": "{#90}│ {#92}Users       {#90}│",
+        "myselfOnly": false,
+        "format": "{$1}\u001b[38;2;122;162;247m{1}@{host-name}{/host-name}localhost{/}{?client-ip} [IP:{client-ip}]{?} [Login:{login-time}]\u001b[39m"
         },
         {
-            "type": "datetime",
-            "format": "{11}-{3}-{1}",
-            "key": " ",
-            "keyColor": "34",
+        "type": "datetime",
+        "key": "{#90}│ {#92}Datetime    {#90}│",
+        "format": "{$1}\u001b[38;2;224;175;104m{year}-{month-pretty}-{day-in-month} {hour-pretty}:{minute-pretty}:{second-pretty} [{weekday}] [W{week}] [UTC{offset-from-utc}]\u001b[39m"
         },
         {
-            "type": "media",
-            "key": "󰝚 ",
-            "keyColor": "34",
+        "type": "title",
+        "key": "{#90}│ {#93}Host        {#90}│",
+        "format": "{$1}\u001b[38;2;122;162;247m{host-name}\u001b[39m"
         },
         {
-            "type": "player",
-            "key": " ",
-            "keyColor": "34",
+        "type": "host",
+        "key": "{#90}│ {#93}Machine     {#90}│",
+        "format": "{$1}\u001b[38;2;122;162;247m{name}\u001b[39m {version}"
         },
-        "break",
         {
-            "type": "custom",
-            "format": "\u001b[90m  \u001b[31m  \u001b[32m  \u001b[33m  \u001b[34m  \u001b[35m  \u001b[36m  \u001b[37m "
+        "type": "os",
+        "key": "{#90}│ {#93}OS          {#90}│",
+        "format": "{$1}\u001b[38;2;122;162;247m{?pretty-name}{pretty-name}{?}{/pretty-name}{name}{/} {codename} [v{version}] [{arch}]\u001b[39m"
         },
-        "break",
-        "break",
+        {
+        "type": "kernel",
+        "key": "{#90}│ {#93}Kernel      {#90}│",
+        "format": "{$1}\u001b[38;2;122;162;247m{sysname} [v{release}]\u001b[39m"
+        },
+        {
+        "type": "uptime",
+        "key": "{#90}│ {#93}Uptime      {#90}│",
+        "format": "{$1}\u001b[38;2;224;175;104m{?days}{days} Days + {?}{hours}:{minutes}:{seconds}\u001b[39m"
+        },
+        {
+        "type": "cpu",
+        "key": "{#90}│ {#91}CPU         {#90}│",
+        "showPeCoreCount": true,
+        "temp": true,
+        "format": "{$1}\u001b[38;2;247;118;142m{name}\u001b[39m [C:{core-types}] [{freq-max}]"
+        },
+        {
+        "type": "gpu",
+        "key": "{#90}│ {#91}GPU         {#90}│",
+        "detectionMethod": "auto",
+        "driverSpecific": true,
+        "format": "{$1}\u001b[38;2;247;118;142m{name}\u001b[39m [C:{core-count}]{?frequency} [{frequency}]{?} [{type}]"
+        },
+        {
+        "type": "memory",
+        "key": "{#90}│ {#91}Memory      {#90}│",
+        "format": "{$1}\u001b[38;2;158;206;106m{used} / {total} ({percentage})\u001b[39m"
+        },
+        {
+        "type": "disk",
+        "key": "{#90}│ {#91}Disk        {#90}│",
+        "format": "{$1}\u001b[38;2;158;206;106m{size-used} / {size-total} ({size-percentage})\u001b[39m"
+        },
+
+        // ✅ Battery line: percentage + cycles + health (Tokyonight green)
+        {
+        "type": "command",
+        "key": "{#90}│ {#91}Battery     {#90}│",
+        "text": "upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/percentage/ {p=$2} /charge-cycles/ {c=$2} /energy-full:/ {f=$2} /energy-full-design:/ {d=$2} END {printf \"%s  %s cycles  %.1f%% health\", p, c, f/d*100}'",
+        "format": "{$1}\u001b[38;2;158;206;106m{}\u001b[39m"
+        },
+
+        {
+        "type": "poweradapter",
+        "key": "{#90}│ {#91}Power       {#90}│",
+        "format": "{$1}\u001b[38;2;158;206;106m{name}\u001b[39m"
+        },
+        {
+        "type": "terminal",
+        "key": "{#90}│ {#95}Terminal    {#90}│",
+        "format": "{$1}\u001b[38;2;187;154;247m{pretty-name}\u001b[39m [v{version}] [PID:{pid}]"
+        },
+        {
+        "type": "terminalfont",
+        "key": "{#90}│ {#95}Font        {#90}│",
+        "format": "{$1}\u001b[38;2;187;154;247m{name}\u001b[39m [size:{size}]"
+        },
+        {
+        "type": "shell",
+        "key": "{#90}│ {#95}Shell       {#90}│",
+        "format": "{$1}\u001b[38;2;187;154;247m{pretty-name}\u001b[39m [v{version}] [PID:{pid}]"
+        },
+        {
+        "type": "localip",
+        "key": "{#90}│ {#94}Local IPv4  {#90}│",
+        "showPrefixLen": true,
+        "showIpv4": true,
+        "showIpv6": false,
+        "showMtu": true,
+        "format": "{$1}\u001b[38;2;125;207;255m{ifname}: {ipv4}\u001b[39m [MTU:{mtu}]"
+        },
+        {
+        "type": "localip",
+        "key": "{#90}│ {#94}Local IPv6  {#90}│",
+        "showPrefixLen": true,
+        "showIpv4": false,
+        "showIpv6": true,
+        "showMtu": true,
+        "format": "{$1}\u001b[38;2;125;207;255m{ifname}: {ipv6}\u001b[39m [MTU:{mtu}]"
+        },
+
+        {
+        "type": "custom",
+        "key": "{#90}╰─────────────╯",
+        "format": "{#90}╰─────────────────────────────────────────────────────────────╯"
+        }
     ]
-}
-
+    }
