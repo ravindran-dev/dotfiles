@@ -1,0 +1,190 @@
+
+
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+
+  /* ================= LOGO ================= */
+  "logo": {
+    "source": "~/.local/share/fastfetch/images/me.png",
+    "type": "kitty-icat",
+    "height": 4,
+    "padding": { "top": 1 }
+  },
+
+  /* ================= DISPLAY ================= */
+  "display": {
+    "separator": "",
+    "constants": [
+      "\u001b[90m│                                                             │\u001b[61D\u001b[39m"
+    ]
+  },
+
+  /* ================= MODULES ================= */
+  "modules": [
+    "break",
+
+    /* ===== BOX TOP ===== */
+    {
+      "type": "custom",
+      "key": "{#90}╭─────────────╮",
+      "format": "{#90}╭─────────────────────────────────────────────────────────────╮"
+    },
+
+    /* ===== USER ===== */
+    {
+      "type": "title",
+      "key": "{#90}│ {#92}User        {#90}│",
+      "format": "{$1}\u001b[38;2;122;162;247m{user-name}\u001b[39m [home:{home-dir}]"
+    },
+    {
+      "type": "users",
+      "key": "{#90}│ {#92}Users       {#90}│",
+      "format": "{$1}\u001b[38;2;122;162;247m{1}@{host-name}\u001b[39m"
+    },
+    {
+      "type": "datetime",
+      "key": "{#90}│ {#92}Datetime    {#90}│",
+      "format": "{$1}\u001b[38;2;224;175;104m{year}-{month-pretty}-{day-in-month} {hour-pretty}:{minute-pretty}:{second-pretty} [{weekday}] [W{week}] [UTC{offset-from-utc}]\u001b[39m"
+    },
+
+    /* ===== SYSTEM ===== */
+    {
+      "type": "host",
+      "key": "{#90}│ {#93}Machine     {#90}│",
+      "format": "{$1}\u001b[38;2;122;162;247m{name}\u001b[39m"
+    },
+    {
+      "type": "os",
+      "key": "{#90}│ {#93}OS          {#90}│",
+      "format": "{$1}\u001b[38;2;122;162;247m  {pretty-name} [{arch}]\u001b[39m"
+    },
+    {
+      "type": "kernel",
+      "key": "{#90}│ {#93}Kernel      {#90}│",
+      "format": "{$1}\u001b[38;2;122;162;247m{release}\u001b[39m"
+    },
+    {
+      "type": "uptime",
+      "key": "{#90}│ {#93}Uptime      {#90}│",
+      "format": "{$1}\u001b[38;2;224;175;104m{hours}:{minutes}\u001b[39m"
+    },
+
+    /* ===== PERFORMANCE ===== */
+    {
+      "type": "cpu",
+      "key": "{#90}│ {#91}CPU         {#90}│",
+      "format": "{$1}\u001b[38;2;247;118;142m{name}\u001b[39m [{freq-max}]"
+    },
+
+    {
+      "type": "command",
+      "key": "{#90}│ {#91}CPU Usage   {#90}│",
+      "text": "awk '/^cpu /{printf \"%.1f%%\", ($2+$4)*100/($2+$4+$5)}' /proc/stat",
+      "format": "{$1}\u001b[38;2;247;118;142m{}\u001b[39m"
+    },
+
+    {
+      "type": "command",
+      "key": "{#90}│ {#91}CPU Temp    {#90}│",
+      "text": "sensors | awk '/Package id 0/ {print $4}'",
+      "format": "{$1}\u001b[38;2;247;118;142m{}\u001b[39m"
+    },
+
+    {
+      "type": "command",
+      "key": "{#90}│ {#91}Load Avg    {#90}│",
+      "text": "cut -d' ' -f1-3 /proc/loadavg",
+      "format": "{$1}\u001b[38;2;247;118;142m{}\u001b[39m"
+    },
+
+    {
+      "type": "memory",
+      "key": "{#90}│ {#91}Memory      {#90}│",
+      "format": "{$1}\u001b[38;2;158;206;106m{used} / {total} ({percentage})\u001b[39m"
+    },
+
+    /* ===== GPU ===== */
+    {
+      "type": "gpu",
+      "index": 0,
+      "key": "{#90}│ {#91}GPU         {#90}│",
+      "format": "{$1}\u001b[38;2;247;118;142m{name}\u001b[39m"
+    },
+
+
+
+    /* ===== STORAGE ===== */
+    {
+      "type": "disk",
+      "key": "{#90}│ {#91}Disk /      {#90}│",
+      "mountpoint": "/",
+      "format": "{$1}\u001b[38;2;158;206;106m{size-used}/{size-total} ({size-percentage})\u001b[39m"
+    },
+    {
+      "type": "disk",
+      "key": "{#90}│ {#91}Disk ~      {#90}│",
+      "mountpoint": "/home",
+      "format": "{$1}\u001b[38;2;158;206;106m{size-used}/{size-total} ({size-percentage})\u001b[39m"
+    },
+
+    {
+      "type": "command",
+      "key": "{#90}│ {#93}Packages    {#90}│",
+      "text": "pacman -Qq | wc -l",
+      "format": "{$1}\u001b[38;2;122;162;247m{}\u001b[39m"
+    },
+
+    /* ===== POWER ===== */
+    {
+      "type": "command",
+      "key": "{#90}│ {#91}Battery     {#90}│",
+      "text": "upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/percentage/ {p=$2} /charge-cycles/ {c=$2} /energy-full:/ {f=$2} /energy-full-design:/ {d=$2} END {printf \"%s  %s cycles  %.1f%% health\", p, c, f/d*100}'",
+      "format": "{$1}\u001b[38;2;158;206;106m{}\u001b[39m"
+    },
+
+    {
+      "type": "command",
+      "key": "{#90}│ {#91}Battery ETA {#90}│",
+      "text": "upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/time to empty/ {print $4\" \"$5}'",
+      "format": "{$1}\u001b[38;2;158;206;106m{}\u001b[39m"
+    },
+
+    {
+      "type": "command",
+      "key": "{#90}│ {#91}Power Draw  {#90}│",
+      "text": "upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/energy-rate/ {print $2 \" W\"}'",
+      "format": "{$1}\u001b[38;2;158;206;106m{}\u001b[39m"
+    },
+
+    /* ===== DEV ===== */
+    {
+      "type": "shell",
+      "key": "{#90}│ {#95}Shell       {#90}│",
+      "format": "{$1}\u001b[38;2;187;154;247m{pretty-name} [{version}]\u001b[39m"
+    },
+    {
+      "type": "terminal",
+      "key": "{#90}│ {#95}Terminal    {#90}│",
+      "format": "{$1}\u001b[38;2;187;154;247m{pretty-name} [{version}]\u001b[39m"
+    },
+    {
+      "type": "terminalfont",
+      "key": "{#90}│ {#95}Font        {#90}│",
+      "format": "{$1}\u001b[38;2;187;154;247m{name} [size:{size}]\u001b[39m"
+    },
+
+    /* ===== NETWORK ===== */
+    {
+      "type": "localip",
+      "key": "{#90}│ {#94}Local IPv4  {#90}│",
+      "format": "{$1}\u001b[38;2;125;207;255m{ifname}: {ipv4}\u001b[39m"
+    },
+
+    /* ===== BOX BOTTOM ===== */
+    {
+      "type": "custom",
+      "key": "{#90}╰─────────────╯",
+      "format": "{#90}╰─────────────────────────────────────────────────────────────╯"
+    }
+  ]
+}
