@@ -41,6 +41,7 @@ alias ll='ls -alh'
 alias cat='bat'
 alias chatgpt='source /home/ravi/chatgpt-env/bin/activate && chmod +x chat.py && ./chat.py'
 alias metrics= 'sys'
+alias todo='cd todo-tui && cargo run'
 # Git
 alias gs='git status'
 alias ga='git add .'
@@ -51,7 +52,6 @@ alias gb='git branch'
 alias gd='git diff'
 
 
-: <<'END_COMMENT'
 precmd() { vcs_info }
 setopt prompt_subst
 autoload -Uz vcs_info
@@ -79,7 +79,6 @@ precmd() {
 }
 
 precmd
-END_COMMENT
 
 if [[ $interactiveShellTest > 0 ]]; then bind "set completion-ignore-case on"; fi
 
@@ -159,7 +158,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 export PATH="$PATH:/home/ravi/.local/bin"
 
-export OPENAI_KEY="API_KEY"
+export OPENAI_KEY="API_KEY_HERE"
 
 #typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(cpu_load ram battery time)
 
@@ -186,4 +185,3 @@ precmd() { notify_long_command }
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
