@@ -1,17 +1,16 @@
 
-
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
 
-  /* ================= LOGO ================= */
+ 
   "logo": {
     "source": "~/.local/share/fastfetch/images/me.png",
     "type": "kitty-icat",
     "height": 4,
-    "padding": { "top": 1 }
+    "padding": { "top": 0 }
   },
 
-  /* ================= DISPLAY ================= */
+
   "display": {
     "separator": "",
     "constants": [
@@ -19,18 +18,18 @@
     ]
   },
 
-  /* ================= MODULES ================= */
+  
   "modules": [
     "break",
 
-    /* ===== BOX TOP ===== */
+    
     {
       "type": "custom",
       "key": "{#90}╭─────────────╮",
       "format": "{#90}╭─────────────────────────────────────────────────────────────╮"
     },
 
-    /* ===== USER ===== */
+    
     {
       "type": "title",
       "key": "{#90}│ {#92}User        {#90}│",
@@ -47,7 +46,7 @@
       "format": "{$1}\u001b[38;2;224;175;104m{year}-{month-pretty}-{day-in-month} {hour-pretty}:{minute-pretty}:{second-pretty} [{weekday}] [W{week}] [UTC{offset-from-utc}]\u001b[39m"
     },
 
-    /* ===== SYSTEM ===== */
+    
     {
       "type": "host",
       "key": "{#90}│ {#93}Machine     {#90}│",
@@ -69,7 +68,7 @@
       "format": "{$1}\u001b[38;2;224;175;104m{hours}:{minutes}\u001b[39m"
     },
 
-    /* ===== PERFORMANCE ===== */
+   
     {
       "type": "cpu",
       "key": "{#90}│ {#91}CPU         {#90}│",
@@ -103,27 +102,27 @@
       "format": "{$1}\u001b[38;2;158;206;106m{used} / {total} ({percentage})\u001b[39m"
     },
 
-    /* ===== GPU ===== */
+    
     {
       "type": "gpu",
-      "index": 0,
+      
       "key": "{#90}│ {#91}GPU         {#90}│",
       "format": "{$1}\u001b[38;2;247;118;142m{name}\u001b[39m"
     },
 
 
 
-    /* ===== STORAGE ===== */
+  
     {
       "type": "disk",
       "key": "{#90}│ {#91}Disk /      {#90}│",
-      "mountpoint": "/",
+      "mountpoints": "/",
       "format": "{$1}\u001b[38;2;158;206;106m{size-used}/{size-total} ({size-percentage})\u001b[39m"
     },
     {
       "type": "disk",
       "key": "{#90}│ {#91}Disk ~      {#90}│",
-      "mountpoint": "/home",
+      "mountpoints": "/home",
       "format": "{$1}\u001b[38;2;158;206;106m{size-used}/{size-total} ({size-percentage})\u001b[39m"
     },
 
@@ -134,7 +133,7 @@
       "format": "{$1}\u001b[38;2;122;162;247m{}\u001b[39m"
     },
 
-    /* ===== POWER ===== */
+    
     {
       "type": "command",
       "key": "{#90}│ {#91}Battery     {#90}│",
@@ -156,7 +155,7 @@
       "format": "{$1}\u001b[38;2;158;206;106m{}\u001b[39m"
     },
 
-    /* ===== DEV ===== */
+   
     {
       "type": "shell",
       "key": "{#90}│ {#95}Shell       {#90}│",
@@ -173,14 +172,14 @@
       "format": "{$1}\u001b[38;2;187;154;247m{name} [size:{size}]\u001b[39m"
     },
 
-    /* ===== NETWORK ===== */
+ 
     {
       "type": "localip",
       "key": "{#90}│ {#94}Local IPv4  {#90}│",
       "format": "{$1}\u001b[38;2;125;207;255m{ifname}: {ipv4}\u001b[39m"
     },
 
-    /* ===== BOX BOTTOM ===== */
+    
     {
       "type": "custom",
       "key": "{#90}╰─────────────╯",

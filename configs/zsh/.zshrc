@@ -1,23 +1,11 @@
-# =========================================
-# Zsh Configuration by Ravindran S
-# For Arch Linux + Powerlevel10k setup
-# ========================================
-
 fastfetch
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-
 [[ $- != *i* ]] && return
 
-plugins=(
-  git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
-#source ${ZSH_CUSTOM:-~/.zsh}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-#source ${ZSH_CUSTOM:-~/.zsh}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 
 autoload -Uz compinit
 compinit
@@ -26,9 +14,8 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' rehash true
 
-
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#888888'
-#source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 alias cls='clear'
 alias sdn='shutdown now'
 alias ex='exit'
@@ -40,9 +27,8 @@ alias la='ls -a'
 alias ll='ls -alh'
 alias cat='bat'
 alias chatgpt='source /home/ravi/chatgpt-env/bin/activate && chmod +x chat.py && ./chat.py'
-alias metrics= 'sys'
+alias metrics='sys'
 alias todo='cd todo-tui && cargo run'
-# Git
 alias gs='git status'
 alias ga='git add .'
 alias gc='git commit -m'
@@ -51,21 +37,12 @@ alias gl='git pull'
 alias gb='git branch'
 alias gd='git diff'
 
-
-precmd() { vcs_info }
-setopt prompt_subst
-autoload -Uz vcs_info
-precmd() { vcs_info }
-
-
-
 autoload -Uz vcs_info
 autoload -U colors && colors
 
 zstyle ':vcs_info:git:*' formats "%F{magenta}   %b%f"
 zstyle ':vcs_info:git:*' actionformats "%F{red}   %b|%a%f"
 zstyle ':vcs_info:*' enable git
-
 
 typeset -ga symbols=( "󱞩" "󱞩" "󱞩" "󱞩" "󱞩" "󱞩" )
 typeset -gi idx=1
@@ -78,10 +55,6 @@ precmd() {
   (( idx = (idx % ${#symbols[@]}) + 1 ))
 }
 
-precmd
-
-if [[ $interactiveShellTest > 0 ]]; then bind "set completion-ignore-case on"; fi
-
 setopt APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
@@ -93,84 +66,61 @@ SAVEHIST=1000
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 
-
 bindkey '^[[A' history-beginning-search-backward
 bindkey '^[[B' history-beginning-search-forward
-
-
-bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
-bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 bindkey "${terminfo[kcuu1]}" backward-history
 bindkey "${terminfo[kcud1]}" forward-history
-autoload -U compinit
-compinit
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' menu selec
 
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' menu select
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
 zstyle ':completion:*:messages' format '%F{red}-- %d --%f'
 zstyle ':completion:*:warnings' format '%F{red}no matches for: %d%f'
 zstyle ':completion:*:corrections' format '%F{green}[%d]%f'
 
-
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 setopt correct_all
-
 setopt auto_cd
 setopt auto_pushd
 setopt autoparamslash
 
 sys() {
-
-    echo "Activating virtual environment..."
-
-    if [ -f "/home/ravi/sys/bin/activate" ]; then
-        source /home/ravi/sys/bin/activate
-        echo "Environment activated. Starting application..."
-
-        sysdash
-        deactivate
-        echo "Application stopped and venv deactivated."
-    else
-        echo "Error: venv/bin/activate not found. Are you in the right directory?"
-    fi
+  echo "Activating virtual environment..."
+  if [ -f "/home/ravi/sys/bin/activate" ]; then
+    source /home/ravi/sys/bin/activate
+    sysdash
+    deactivate
+  else
+    echo "Error: venv not found"
+  fi
 }
 
-
 display_image() {
-    if command -v chafa &> /dev/null; then
-        chafa "$1"
-    elif command -v img2sixel &> /dev/null; then
-        img2sixel "$1"
-    else
-        echo "Image viewer not found. Please install chafa or img2sixel."
-    fi
+  if command -v chafa &> /dev/null; then
+    chafa "$1"
+  elif command -v img2sixel &> /dev/null; then
+    img2sixel "$1"
+  else
+    echo "Image viewer not found"
+  fi
 }
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-
 export PATH="$PATH:/home/ravi/.local/bin"
-
 export OPENAI_KEY="API_KEY_HERE"
-
-#typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(cpu_load ram battery time)
 
 source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-
-
 notify_long_command() {
   if (( SECONDS > 10 )); then
     if [[ $? -eq 0 ]]; then
-      notify-send "Command completed successfully in $SECONDS s" "$(fc -ln -1)"
+      notify-send "Command completed in $SECONDS s" "$(fc -ln -1)"
       canberra-gtk-play -i complete >/dev/null 2>&1 &!
     else
       notify-send "Command failed after $SECONDS s" "$(fc -ln -1)"
@@ -180,8 +130,45 @@ notify_long_command() {
 }
 
 preexec() { SECONDS=0 }
-precmd() { notify_long_command }
+precmd_functions+=(notify_long_command)
+
+weekly_system_update() {
+  local stamp="$HOME/.cache/.weekly_update_stamp"
+  local log="$HOME/.cache/weekly_update.log"
+  local now=$(date +%s)
+  local limit=$((7*24*60*60))
+
+  if [[ -f "$stamp" ]] && (( now - $(cat "$stamp") < limit )); then
+    return
+  fi
+
+  if command -v upower >/dev/null; then
+    local battery=$(upower -e | grep BAT | head -n1)
+    if [[ -n "$battery" ]]; then
+      local state=$(upower -i "$battery" | awk '/state/ {print $2}')
+      [[ "$state" != "charging" && "$state" != "fully-charged" ]] && return
+    fi
+  fi
+
+  notify-send "Weekly system update started"
+  echo "Update started at $(date)" >> "$log"
+
+  sudo pacman -Syu --noconfirm >> "$log" 2>&1
+
+  if command -v paru >/dev/null; then
+    paru -Syu --noconfirm >> "$log" 2>&1
+  elif command -v yay >/dev/null; then
+    yay -Syu --noconfirm >> "$log" 2>&1
+  fi
+
+  date +%s >| "$stamp"
+  notify-send "Weekly system update completed"
+  canberra-gtk-play -i complete >/dev/null 2>&1 &!
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd weekly_system_update
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
