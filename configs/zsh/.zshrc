@@ -57,17 +57,34 @@ ICON=""
 
 
 
+
+
 git_prompt() {
   command git rev-parse --is-inside-work-tree &>/dev/null || return
 
-  local branch dirty
+  local branch staged unstaged out
 
   branch=$(command git symbolic-ref --short HEAD 2>/dev/null \
         || command git describe --tags --exact-match 2>/dev/null)
 
-  command git diff --quiet --ignore-submodules HEAD &>/dev/null || dirty="*"
+  # Count staged files
+  staged=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
 
-  echo "%F{213}  ${branch}${dirty}%f"
+  # Count unstaged + untracked files
+  unstaged=$(
+    { git diff --name-only 2>/dev/null
+      git ls-files --others --exclude-standard 2>/dev/null; } | sort -u | wc -l | tr -d ' '
+  )
+
+  out="%F{213} ${branch}%f"
+
+  # Show staged count
+  (( staged > 0 )) && out+=" %F{82}${staged}%f"
+
+  # Show unstaged / untracked count
+  (( unstaged > 0 )) && out+=" %F{226}${unstaged}%f"
+
+  print -P "$out"
 }
 
 
