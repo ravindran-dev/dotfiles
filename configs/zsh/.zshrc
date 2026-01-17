@@ -1,7 +1,5 @@
+
 fastfetch
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
 [[ $- != *i* ]] && return
 
@@ -28,7 +26,7 @@ alias ll='ls -alh'
 alias cat='bat'
 alias chatgpt='source /home/ravi/chatgpt-env/bin/activate && chmod +x chat.py && ./chat.py'
 alias metrics='sys'
-alias todo='cd todo-tui && cargo run'
+alias todo='cd todo-tui && cargo run && cd'
 alias gs='git status'
 alias ga='git add .'
 alias gc='git commit -m'
@@ -36,23 +34,65 @@ alias gp='git push'
 alias gl='git pull'
 alias gb='git branch'
 alias gd='git diff'
+alias health='linux-health && go run ./cmd/linux-health && cd'
+alias jarvis='cd Jarvis && cargo run && cd'
 
-autoload -Uz vcs_info
-autoload -U colors && colors
 
-zstyle ':vcs_info:git:*' formats "%F{magenta}   %b%f"
-zstyle ':vcs_info:git:*' actionformats "%F{red}   %b|%a%f"
-zstyle ':vcs_info:*' enable git
 
-typeset -ga symbols=( "󱞩" "󱞩" "󱞩" "󱞩" "󱞩" "󱞩" )
-typeset -gi idx=1
+
+autoload -Uz colors && colors
+setopt prompt_subst
+
+
+NEON_BLUE="%F{39}"
+NEON_CYAN="%F{51}"
+NEON_GREEN="%F{82}"
+NEON_PINK="%F{213}"
+NEON_PURPLE="%F{141}"
+NEON_YELLOW="%F{226}"
+NEON_RED="%F{196}"
+RESET="%f"
+
+ICON=""
+
+
+
+git_prompt() {
+  command git rev-parse --is-inside-work-tree &>/dev/null || return
+
+  local branch dirty
+
+  branch=$(command git symbolic-ref --short HEAD 2>/dev/null \
+        || command git describe --tags --exact-match 2>/dev/null)
+
+  command git diff --quiet --ignore-submodules HEAD &>/dev/null || dirty="*"
+
+  echo "%F{213} ${branch}${dirty}%f"
+}
+
+
+venv_prompt() {
+  [[ -n "$VIRTUAL_ENV" ]] || return
+  local venv_name="${VIRTUAL_ENV:t}"
+  echo "${NEON_GREEN} ${venv_name}${RESET}"
+}
+
+
+path_prompt() {
+  echo "${NEON_BLUE}%~${RESET}"
+}
+
 
 precmd() {
-  vcs_info
+  local time="%D{%H:%M}"
+  local user="%n@%m"
+  local git="$(git_prompt)"
+  local venv="$(venv_prompt)"
+  local path="$(path_prompt)"
+
   PROMPT="
-%F{yellow}%D{%H:%M}%f %F{cyan}%n@%m %F{blue}%~%f ${vcs_info_msg_0_}
-%F{magenta}${symbols[$idx]}%f "
-  (( idx = (idx % ${#symbols[@]}) + 1 ))
+${NEON_CYAN}${ICON}${RESET}  ${NEON_YELLOW}${time}${RESET}  ${NEON_PURPLE}${user}${RESET}  ${path}  ${git}  ${venv}
+${NEON_CYAN}󱞩${RESET} "
 }
 
 setopt APPEND_HISTORY
@@ -95,27 +135,13 @@ sys() {
   fi
 }
 
-display_image() {
-  if command -v chafa &> /dev/null; then
-    chafa "$1"
-  elif command -v img2sixel &> /dev/null; then
-    img2sixel "$1"
-  else
-    echo "Image viewer not found"
-  fi
-}
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 export PATH="$PATH:/home/ravi/.local/bin"
-export OPENAI_KEY="API_KEY_HERE"
+export OPENAI_KEY="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"
 
-source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 notify_long_command() {
   if (( SECONDS > 10 )); then
