@@ -67,7 +67,7 @@ git_prompt() {
 
   command git diff --quiet --ignore-submodules HEAD &>/dev/null || dirty="*"
 
-  echo "%F{213} ${branch}${dirty}%f"
+  echo "%F{213}  ${branch}${dirty}%f"
 }
 
 
@@ -79,13 +79,13 @@ venv_prompt() {
 
 
 path_prompt() {
-  echo "${NEON_BLUE}%~${RESET}"
+  echo "${NEON_BLUE}  %~${RESET}"
 }
 
 
 precmd() {
-  local time="%D{%H:%M}"
-  local user="%n@%m"
+  local time=" %D{%H:%M}"
+  local user="  %n@%m"
   local git="$(git_prompt)"
   local venv="$(venv_prompt)"
   local path="$(path_prompt)"
@@ -140,7 +140,7 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export PATH="$PATH:/home/ravi/.local/bin"
-export OPENAI_KEY="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"
+export OPENAI_KEY="API_KEY_HERE"
 
 
 notify_long_command() {
