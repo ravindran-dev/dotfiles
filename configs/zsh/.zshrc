@@ -1,5 +1,32 @@
 
-fastfetch
+
+
+FASTFETCH_SHOWN=0
+
+function hyprland_is_single_window() {
+  command -v hyprctl >/dev/null || return 1
+
+  local ws windows
+  ws=$(hyprctl activeworkspace -j 2>/dev/null | jq -r '.id')
+  windows=$(hyprctl clients -j 2>/dev/null | jq "[.[] | select(.workspace.id == $ws)] | length")
+
+  [[ "$windows" -eq 1 ]]
+}
+
+function show_fastfetch_once() {
+  [[ $FASTFETCH_SHOWN -eq 1 ]] && return
+
+
+  hyprland_is_single_window || return
+
+  FASTFETCH_SHOWN=1
+  sleep 0.1
+  clear
+  fastfetch
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd show_fastfetch_once
 
 [[ $- != *i* ]] && return
 
@@ -79,10 +106,10 @@ git_prompt() {
   out="%F{213} ${branch}%f"
 
   # Show staged count
-  (( staged > 0 )) && out+=" %F{82}${staged}%f"
+  (( staged > 0 )) && out+=" %F{82} ${staged}%f"
 
   # Show unstaged / untracked count
-  (( unstaged > 0 )) && out+=" %F{226}${unstaged}%f"
+  (( unstaged > 0 )) && out+=" %F{226} ${unstaged}%f"
 
   print -P "$out"
 }
