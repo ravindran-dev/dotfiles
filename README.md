@@ -41,7 +41,8 @@ The fully customized ready to use configurations like zsh, fastfetch and kitty.
 sudo pacman -S zsh git libnotify libcanberra
 paru -S exa bat fzf zoxide fastfetch ttf-meslo-nerd-font-powerlevel10k
 python -m venv chatgpt-env
-pip install openai
+pip install openai dotenv
+
 ```
 
 ### 2. Clone repositories
