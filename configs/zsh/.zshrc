@@ -89,8 +89,7 @@ precmd() {
   local git="$(git_prompt)"
   local venv="$(venv_prompt)"
   local path="$(path_prompt)"
-  PROMPT="
-${NEON_CYAN}${ICON}${RESET} ${distro} ${NEON_YELLOW}${time}${RESET} ${NEON_PURPLE}${user}${RESET} ${path} ${git} ${venv}
+  PROMPT="${NEON_CYAN}${ICON}${RESET} ${distro} ${NEON_YELLOW}${time}${RESET} ${NEON_PURPLE}${user}${RESET} ${path} ${git} ${venv}
 ${NEON_CYAN}󱞩${RESET} "
 }
 
@@ -198,6 +197,13 @@ weekly_system_update() {
 
 add-zsh-hook precmd weekly_system_update
 
+draw_separator() {
+  local cols=${COLUMNS:-120}
+  local line="${(l:${cols}::─:)}"
+  print -P "%F{240}${line}%f"
+}
+
+add-zsh-hook precmd draw_separator
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
