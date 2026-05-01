@@ -6,8 +6,9 @@
 #   Author: Ravindran S
 # =========================================
 
+#!/bin/zsh
 
-set -e
+set -euo pipefail
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -34,83 +35,75 @@ info() { echo -e "${YELLOW}➜ $1${RESET}"; }
 
 section "Shell Setup (Zsh)"
 sudo pacman -S --needed --noconfirm zsh
-[[ "$SHELL" != "$(which zsh)" ]] && chsh -s "$(which zsh)"
-success "Zsh installed & configured"
+
+if [[ "$SHELL" != "$(command -v zsh)" ]]; then
+    chsh -s "$(command -v zsh)" "$USER" || true
+fi
+
+success "Zsh installed"
 
 section "System Update"
 info "Updating system..."
 sudo pacman -Syu --noconfirm
-success "System up to date"
+success "System updated"
 
 section "Timezone Configuration"
 sudo timedatectl set-timezone Asia/Kolkata
 success "Timezone set"
 
-section "Installing Arch Essentials"
+section "Installing Essentials"
 sudo pacman -S --needed --noconfirm \
-  base-devel git wget curl neovim tmux htop btop \
-  kdeconnect fastfetch unzip zip zlib xz tk kcalc \
-  firefox discord power-profiles-daemon
+base-devel git wget curl neovim tmux htop btop \
+kdeconnect fastfetch unzip zip zlib xz tk kcalc \
+firefox discord power-profiles-daemon rustup
+
 success "Core packages installed"
 
-section "Installing paru (AUR Helper)"
-if ! command -v paru &>/dev/null; then
-  rm -rf ~/paru
-  git clone https://aur.archlinux.org/paru.git ~/paru
-  cd ~/paru && makepkg -si --noconfirm && cd ~
-else
-  rm -rf ~/paru
-  git clone https://aur.archlinux.org/paru.git ~/paru
-  cd ~/paru && makepkg -si --noconfirm && cd ~
-fi
-success "paru ready"
+section "Configure Rust"
+rustup default stable
+success "Rust ready"
 
-section "Installing yay (AUR Helper)"
-if ! command -v yay &>/dev/null; then
-  rm -rf ~/yay
-  git clone https://aur.archlinux.org/yay.git ~/yay
-  cd ~/yay && makepkg -si --noconfirm && cd ~
+section "Installing paru"
+
+if ! command -v paru >/dev/null 2>&1; then
+    rm -rf ~/paru
+    git clone https://aur.archlinux.org/paru.git ~/paru
+    cd ~/paru
+    makepkg -si --noconfirm
+    cd ~
 fi
-success "yay ready"
+
+success "paru installed"
+
+section "Installing yay"
+
+if ! command -v yay >/dev/null 2>&1; then
+    rm -rf ~/yay
+    git clone https://aur.archlinux.org/yay.git ~/yay
+    cd ~/yay
+    makepkg -si --noconfirm
+    cd ~
+fi
+
+success "yay installed"
 
 section "Installing Browsers"
+
 paru -S --needed --noconfirm brave-bin
 yay -S --needed --noconfirm google-chrome
+
 success "Browsers installed"
 
 section "Installing Spotify"
+
 yay -S --needed --noconfirm spotify
+
 success "Spotify installed"
-
-section "Zsh Theme & Plugins"
-mkdir -p ~/.zsh
-
-[[ ! -d ~/.zsh/zsh-autosuggestions ]] && \
-  git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
-
-[[ ! -d ~/.zsh/zsh-syntax-highlighting ]] && \
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
-
-[[ ! -d ~/.zsh/powerlevel10k ]] && \
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.zsh/powerlevel10k
-
-success "Zsh plugins ready"
-
-section "Tmux Plugin Manager"
-[[ ! -d ~/.tmux/plugins/tpm ]] && \
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-success "TPM installed"
-
-section "GitHub CLI"
-sudo pacman -S --needed --noconfirm github-cli
-if ! gh auth status &>/dev/null; then
-  gh auth login
-fi
-success "GitHub authenticated"
 
 echo
 line
-echo -e "${MAGENTA}${BOLD}  Setup Complete! ${RESET}"
+echo -e "${MAGENTA}${BOLD} Setup Complete ${RESET}"
+line
 line
 echo -e "${GREEN}✔ Run:${RESET} chsh -s $(which zsh)"
 echo -e "${GREEN}✔ Tmux:${RESET} prefix + I to install plugins"

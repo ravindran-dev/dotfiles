@@ -1,7 +1,10 @@
 # ZSHRC created and maintained by Ravindran S
 
 [[ $- != *i* ]] && return
-
+if [[ -z "$FASTFETCH_SHOWN" && "$TERM" == "xterm-kitty" ]]; then
+  export FASTFETCH_SHOWN=1
+  fastfetch
+fi
 export PATH="$PATH:/home/ravi/.local/bin"
 export OPENAI_KEY="API_KEY_HERE"
 
@@ -121,7 +124,6 @@ zle -N bracketed-paste bracketed-paste-magic
 zle-line-init() { zle -R }
 zle -N zle-line-init
 
-FASTFETCH_SHOWN=0
 
 
 
@@ -144,18 +146,9 @@ hyprland_is_single_window() {
 
   [[ "$windows" =~ '^[0-9]+$' && "$windows" -eq 1 ]]
 }
-show_fastfetch_once() {
-  [[ $FASTFETCH_SHOWN -eq 1 ]] && return
-  hyprland_is_single_window || return
-  FASTFETCH_SHOWN=1
-  sleep 0.12
-  print -Pn "\e[2J\e[H"
-  fastfetch
-}
 
-add-zsh-hook precmd show_fastfetch_once
 
-preexec() { SECONDS=0 }
+
 
 notify_long_command() {
   (( SECONDS > 10 )) || return
