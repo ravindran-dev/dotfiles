@@ -163,36 +163,11 @@ notify_long_command() {
 
 add-zsh-hook precmd notify_long_command
 
-weekly_system_update() {
-  local stamp="$HOME/.cache/.weekly_update_stamp"
-  local log="$HOME/.cache/weekly_update.log"
-  local now=$(date +%s)
-  local limit=$((7*24*60*60))
-  [[ -f "$stamp" ]] && (( now - $(cat "$stamp") < limit )) && return
-  if command -v upower >/dev/null; then
-    local battery=$(upower -e | grep BAT | head -n1)
-    [[ -n "$battery" ]] || return
-    local state=$(upower -i "$battery" | awk '/state/ {print $2}')
-    [[ "$state" != "charging" && "$state" != "fully-charged" ]] && return
-  fi
-  notify-send "Weekly system update started"
-  echo "Update started at $(date)" >> "$log"
-  sudo pacman -Syu --noconfirm >> "$log" 2>&1
-  if command -v paru >/dev/null; then
-    paru -Syu --noconfirm >> "$log" 2>&1
-  elif command -v yay >/dev/null; then
-    yay -Syu --noconfirm >> "$log" 2>&1
-  fi
-  date +%s >| "$stamp"
-  notify-send "Weekly system update completed"
-  canberra-gtk-play -i complete >/dev/null 2>&1 &!
-}
 
-add-zsh-hook precmd weekly_system_update
 
 draw_separator() {
   local cols=${COLUMNS:-120}
-  local line="${(l:${cols}::─:)}"
+  local line=" "
   print -P "%F{240}${line}%f"
 }
 
