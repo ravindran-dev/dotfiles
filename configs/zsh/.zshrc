@@ -1,10 +1,6 @@
 # ZSHRC created and maintained by Ravindran S
 
 [[ $- != *i* ]] && return
-if [[ -z "$FASTFETCH_SHOWN" && "$TERM" == "xterm-kitty" ]]; then
-  export FASTFETCH_SHOWN=1
-  fastfetch
-fi
 export PATH="$PATH:/home/ravi/.local/bin"
 export OPENAI_KEY="API_KEY_HERE"
 
@@ -45,56 +41,73 @@ alias health='linux-health && go run ./cmd/linux-health && cd'
 alias jarvis='cd Jarvis && cargo run && cd'
 alias rustbook='firefox ~/book/book/index.html'
 
-NEON_BLUE="%{%F{39}%}"
-NEON_CYAN="%{%F{51}%}"
-NEON_GREEN="%{%F{82}%}"
-NEON_PINK="%{%F{213}%}"
-NEON_PURPLE="%{%F{141}%}"
-NEON_YELLOW="%{%F{226}%}"
-NEON_RED="%{%F{196}%}"
-RESET="%{%f%}"
-
-ICON=""
-setopt prompt_subst
+# Custom two-line prompt. Dynamic names are literal text, never shell code.
+unsetopt prompt_subst
 
 git_prompt() {
-  command git rev-parse --is-inside-work-tree &>/dev/null || return
-  local branch staged unstaged out
-  branch=$(command git symbolic-ref --short HEAD 2>/dev/null || command git describe --tags --exact-match 2>/dev/null)
-  staged=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
-  unstaged=$({ git diff --name-only 2>/dev/null; git ls-files --others --exclude-standard 2>/dev/null; } | sort -u | wc -l | tr -d ' ')
-  out="%F{213}  ${branch}%f"
-  (( staged > 0 )) && out+=" %F{82} ${staged}%f"
-  (( unstaged > 0 )) && out+=" %F{226} ${unstaged}%f"
-  print -P "$out"
-}
-
-venv_prompt() {
-  [[ -n "$VIRTUAL_ENV" ]] || return
-  echo "${NEON_GREEN} ${VIRTUAL_ENV:t}${RESET}"
-}
-
-path_prompt() {
-  echo "${NEON_BLUE} %~${RESET}"
-}
-distro_prompt() {
-  local name
-  name=$(awk -F= '/^NAME=/{gsub(/"/,""); print $2}' /etc/os-release 2>/dev/null)
-  [[ -n "$name" ]] || return
-  echo "${NEON_CYAN}${name}${RESET}"
+  local report branch line x y
+  local -i staged=0 changed=0 untracked=0
+  report=$(command git --no-optional-locks status --porcelain=v1 --branch 2>/dev/null) || return
+  local -a entries
+  entries=("${(@f)report}")
+  branch=${entries[1]#\#\# }
+  branch=${branch%%...*}
+  branch=${branch#No commits yet on }
+  branch=${branch#Initial commit on }
+  [[ $branch == 'HEAD (no branch)' ]] && branch=$(command git rev-parse --short HEAD 2>/dev/null)
+  branch=${branch//\%/%%}
+  for line in "${entries[@]:1}"; do
+    x=${line[1]}; y=${line[2]}
+    if [[ $x == '?' ]]; then
+      (( untracked++ ))
+    else
+      [[ $x != ' ' ]] && (( staged++ ))
+      [[ $y != ' ' ]] && (( changed++ ))
+    fi
+  done
+  local result="%F{141} ${branch}%f"
+  (( staged )) && result+=" %F{120}+${staged}%f"
+  (( changed )) && result+=" %F{222}~${changed}%f"
+  (( untracked )) && result+=" %F{117}?${untracked}%f"
+  print -r -- "$result"
 }
 
 precmd() {
-  local distro="$(distro_prompt)"
+  local -i last_status=$?
+  local -i width=${COLUMNS:-80}
+  local git='' venv='' details=''
+  local -i path_width=$(( width / 2 ))
+  (( path_width < 12 )) && path_width=12
 
-  local time=" %D{%H:%M}"
-  local user=" %n@%m"
-  local git="$(git_prompt)"
-  local venv="$(venv_prompt)"
-  local path="$(path_prompt)"
-  PROMPT="${NEON_CYAN}${ICON}${RESET} ${distro} ${NEON_YELLOW}${time}${RESET} ${NEON_PURPLE}${user}${RESET} ${path} ${git} ${venv}
-${NEON_CYAN}󱞩${RESET} "
+  if (( width >= 65 )); then
+    git=$(git_prompt)
+    [[ -n $git ]] && details+=" %F{245}·%f ${git}"
+    if [[ -n $VIRTUAL_ENV ]]; then
+      venv=${VIRTUAL_ENV:t}
+      venv=${venv//\%/%%}
+      details+=" %F{245}·%f %F{120}py:${venv}%f"
+    fi
+  fi
+
+  PROMPT='%F{81}╭─%f '
+  (( width >= 95 )) && PROMPT+='%F{250}%n%f %F{245}·%f '
+  [[ -n $SSH_CONNECTION ]] && PROMPT+='%F{222}@%m%f '
+  PROMPT+="%F{117}%${path_width}<…<%~%<<%f${details}"
+  PROMPT+=$'\n''%F{81}╰─%f '
+  if (( last_status )); then
+    PROMPT+="%F{203}× ${last_status} %f"
+  fi
+  PROMPT+='%(#.%F{203}#.%F{120}❯)%f '
+  # Clip long branches and environments to keep the upper line inside the pane.
+  PROMPT="%$((width > 4 ? width - 2 : 2))<…<${PROMPT%%$'\n'*}%<<"$'\n'"${PROMPT#*$'\n'}"
+  # Separate command blocks without adding space below Fastfetch on startup.
+  [[ ${_CUSTOM_PROMPT_DRAWN:-0} == 1 ]] && PROMPT=$'\n'"$PROMPT"
+  typeset -g _CUSTOM_PROMPT_DRAWN=1
+  RPROMPT=''
+  (( width >= 95 )) && RPROMPT='%F{245}%D{%H:%M}%f'
+  return 0
 }
+
 
 setopt APPEND_HISTORY SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST INC_APPEND_HISTORY
 HISTFILE=~/.zsh_history
@@ -127,29 +140,6 @@ zle -N zle-line-init
 
 
 
-hyprland_is_single_window() {
-  command -v hyprctl >/dev/null || return 1
-
-  local ws windows json
-
-  json=$(hyprctl activeworkspace -j 2>/dev/null)
-  [[ -z "$json" ]] && return 1
-
-  ws=$(echo "$json" | jq -r '.id // empty' 2>/dev/null)
-  [[ -z "$ws" || ! "$ws" =~ '^[0-9]+$' ]] && return 1
-
-  json=$(hyprctl clients -j 2>/dev/null)
-  [[ -z "$json" ]] && return 1
-
-  windows=$(echo "$json" \
-    | jq --argjson ws "$ws" '[.[] | select(.workspace.id == $ws)] | length' 2>/dev/null)
-
-  [[ "$windows" =~ '^[0-9]+$' && "$windows" -eq 1 ]]
-}
-
-
-
-
 notify_long_command() {
   (( SECONDS > 10 )) || return
   if [[ $? -eq 0 ]]; then
@@ -165,16 +155,25 @@ add-zsh-hook precmd notify_long_command
 
 
 
-draw_separator() {
-  local cols=${COLUMNS:-120}
-  local line=" "
-  print -P "%F{240}${line}%f"
-}
-
-add-zsh-hook precmd draw_separator
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Run once at the first prompt, after Kitty/Zsh have established the pane size.
+_fastfetch_startup() {
+  add-zsh-hook -d precmd _fastfetch_startup
+  [[ -t 1 && $TERM == xterm-kitty && -z $SSH_CONNECTION ]] || return 0
+  [[ ${KITTY_WINDOW_ID:-1} == 1 ]] || return 0
+  [[ ${FASTFETCH_SHOWN_WINDOW:-} != "${KITTY_PID:-kitty}:${KITTY_WINDOW_ID:-1}" ]] || return 0
+  [[ ${_FASTFETCH_SHELL_SHOWN:-0} == 0 ]] || return 0
+  (( COLUMNS >= 110 && LINES >= 30 )) || return 0
+  (( $+commands[fastfetch] )) || return 0
+  typeset -g _FASTFETCH_SHELL_SHOWN=1
+  export FASTFETCH_SHOWN_WINDOW="${KITTY_PID:-kitty}:${KITTY_WINDOW_ID:-1}"
+  command fastfetch
+}
+# A local marker avoids repeating Fastfetch when sourcing this file.
+(( ${_FASTFETCH_SHELL_SHOWN:-0} )) || add-zsh-hook precmd _fastfetch_startup
