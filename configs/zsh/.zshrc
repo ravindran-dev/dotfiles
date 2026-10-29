@@ -44,6 +44,17 @@ alias rustbook='firefox ~/book/book/index.html'
 # Custom two-line prompt. Dynamic names are literal text, never shell code.
 unsetopt prompt_subst
 
+# Read the distro name from the system once when loading this config.
+_PROMPT_DISTRO=$(
+  if [[ -r /etc/os-release ]]; then
+    source /etc/os-release
+  elif [[ -r /usr/lib/os-release ]]; then
+    source /usr/lib/os-release
+  fi
+  print -r -- "${NAME:-Linux}"
+)
+_PROMPT_DISTRO=${_PROMPT_DISTRO//\%/%%}
+
 git_prompt() {
   local report branch line x y
   local -i staged=0 changed=0 untracked=0
@@ -65,7 +76,7 @@ git_prompt() {
       [[ $y != ' ' ]] && (( changed++ ))
     fi
   done
-  local result="%F{141} ${branch}%f"
+  local result="%F{141} ${branch}%f"
   (( staged )) && result+=" %F{120}+${staged}%f"
   (( changed )) && result+=" %F{222}~${changed}%f"
   (( untracked )) && result+=" %F{117}?${untracked}%f"
@@ -90,9 +101,9 @@ precmd() {
   fi
 
   PROMPT='%F{81}╭─%f '
-  (( width >= 95 )) && PROMPT+='%F{250}%n%f %F{245}·%f '
+  (( width >= 95 )) && PROMPT+="%F{141} ${_PROMPT_DISTRO}%f %F{245}·%f "'%F{250} %n%f %F{245}·%f '
   [[ -n $SSH_CONNECTION ]] && PROMPT+='%F{222}@%m%f '
-  PROMPT+="%F{117}%${path_width}<…<%~%<<%f${details}"
+  PROMPT+="%F{117} %${path_width}<…<%~%<<%f${details}"
   PROMPT+=$'\n''%F{81}╰─%f '
   if (( last_status )); then
     PROMPT+="%F{203}× ${last_status} %f"
@@ -177,3 +188,7 @@ _fastfetch_startup() {
 }
 # A local marker avoids repeating Fastfetch when sourcing this file.
 (( ${_FASTFETCH_SHELL_SHOWN:-0} )) || add-zsh-hook precmd _fastfetch_startup
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/ravi/.local/bin:$PATH"
