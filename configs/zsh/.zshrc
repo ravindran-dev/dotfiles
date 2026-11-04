@@ -83,41 +83,53 @@ git_prompt() {
   print -r -- "$result"
 }
 
-precmd() {
-  local -i last_status=$?
+# Rebuild from the current pane width, including during an active input line.
+_build_responsive_prompt() {
   local -i width=${COLUMNS:-80}
-  local git='' venv='' details=''
+  local -i budget=$(( width > 8 ? width - 4 : 2 ))
+  local details='' top=''
   local -i path_width=$(( width / 2 ))
-  (( path_width < 12 )) && path_width=12
+  (( path_width < 4 )) && path_width=4
 
-  if (( width >= 65 )); then
-    git=$(git_prompt)
-    [[ -n $git ]] && details+=" %F{245}·%f ${git}"
+  if (( width >= 80 )); then
+    [[ -n $_PROMPT_GIT ]] && details=" %F{245}·%f ${_PROMPT_GIT}"
     if [[ -n $VIRTUAL_ENV ]]; then
-      venv=${VIRTUAL_ENV:t}
+      local venv=${VIRTUAL_ENV:t}
       venv=${venv//\%/%%}
       details+=" %F{245}·%f %F{120}py:${venv}%f"
     fi
   fi
-
-  PROMPT='%F{81}╭─%f '
-  (( width >= 95 )) && PROMPT+="%F{141} ${_PROMPT_DISTRO}%f %F{245}·%f "'%F{250} %n%f %F{245}·%f '
-  [[ -n $SSH_CONNECTION ]] && PROMPT+='%F{222}@%m%f '
-  PROMPT+="%F{117} %${path_width}<…<%~%<<%f${details}"
-  PROMPT+=$'\n''%F{81}╰─%f '
-  if (( last_status )); then
-    PROMPT+="%F{203}× ${last_status} %f"
-  fi
+  top='%F{81}╭─%f '
+  (( width >= 120 )) && top+="%F{141} ${_PROMPT_DISTRO}%f %F{245}·%f "'%F{250} %n%f %F{245}·%f '
+  [[ -n $SSH_CONNECTION && width -ge 60 ]] && top+='%F{222}@%m%f '
+  top+="%F{117} %${path_width}<…<%~%<<%f${details}"
+  PROMPT="%${budget}<…<${top}%<<"$'\n''%F{81}╰─%f '
+  (( ${_PROMPT_LAST_STATUS:-0} )) && PROMPT+="%F{203}× ${_PROMPT_LAST_STATUS} %f"
   PROMPT+='%(#.%F{203}#.%F{120}❯)%f '
-  # Clip long branches and environments to keep the upper line inside the pane.
-  PROMPT="%$((width > 4 ? width - 2 : 2))<…<${PROMPT%%$'\n'*}%<<"$'\n'"${PROMPT#*$'\n'}"
-  # Separate command blocks without adding space below Fastfetch on startup.
-  [[ ${_CUSTOM_PROMPT_DRAWN:-0} == 1 ]] && PROMPT=$'\n'"$PROMPT"
-  typeset -g _CUSTOM_PROMPT_DRAWN=1
+  [[ ${_PROMPT_SEPARATOR:-0} == 1 ]] && PROMPT=$'\n'"$PROMPT"
+  # No right prompt: it jumps between rows when tiled windows resize.
   RPROMPT=''
-  (( width >= 95 )) && RPROMPT='%F{245}%D{%H:%M}%f'
+  typeset -g _PROMPT_WIDTH=$width
+}
+
+precmd() {
+  typeset -g _PROMPT_LAST_STATUS=$?
+  typeset -g _PROMPT_GIT="$(git_prompt)"
+  typeset -g _PROMPT_SEPARATOR=${_CUSTOM_PROMPT_DRAWN:-0}
+  _build_responsive_prompt
+  typeset -g _CUSTOM_PROMPT_DRAWN=1
   return 0
 }
+
+_prompt_resize_redraw() {
+  if (( ${_PROMPT_WIDTH:-0} != COLUMNS )); then
+    _build_responsive_prompt
+    zle reset-prompt
+  fi
+}
+autoload -Uz add-zle-hook-widget
+add-zle-hook-widget -d line-pre-redraw _prompt_resize_redraw 2>/dev/null
+add-zle-hook-widget line-pre-redraw _prompt_resize_redraw
 
 
 setopt APPEND_HISTORY SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST INC_APPEND_HISTORY
