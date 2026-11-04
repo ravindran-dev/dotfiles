@@ -38,7 +38,7 @@ alias gl='git pull'
 alias gb='git branch'
 alias gd='git diff'
 alias health='linux-health && go run ./cmd/linux-health && cd'
-alias jarvis='cd Jarvis && cargo run && cd'
+alias jarvis='bash /home/ravi/Jarvis/launch.sh'
 alias rustbook='firefox ~/book/book/index.html'
 
 # Custom two-line prompt. Dynamic names are literal text, never shell code.
@@ -83,22 +83,51 @@ git_prompt() {
   print -r -- "$result"
 }
 
-# Keep the same compact shape in every tile, without cached width decisions.
-# Limit the directory label to six columns so even narrow tiles stay aligned.
+# Original two-line design, rebuilt from the actual terminal size.
 _build_responsive_prompt() {
-  PROMPT='%F{117}%6<…<%1~%<<%f %(?.%F{120}.%F{203})❯%f '
+  local -i width=${COLUMNS:-80} budget=$(( ${COLUMNS:-80} > 8 ? ${COLUMNS:-80} - 3 : 2 ))
+  local top='%F{81}╭─%f '
+  if (( width >= 85 )); then
+    top+="%F{141} ${_PROMPT_DISTRO}%f %F{245}·%f "'%F{250} %n%f %F{245}·%f '
+  elif (( width >= 45 )); then
+    top+='%F{141}%f %F{250}%n%f %F{245}·%f '
+  fi
+  top+='%F{117} %~%f'
+  (( width >= 100 )) && [[ -n $_PROMPT_GIT ]] && top+=" %F{245}·%f $_PROMPT_GIT"
+  PROMPT="%${budget}<…<${top}%<<"$'\n''%F{81}╰─%f %(?.%F{120}.%F{203})❯%f '
   RPROMPT=''
+  typeset -g _PROMPT_WIDTH=$width
 }
-
 precmd() {
+  typeset -g _PROMPT_GIT="$(git_prompt)"
   _build_responsive_prompt
   return 0
 }
-
-# Remove the previous resize hook when reloading this configuration.
+_prompt_resize_redraw() {
+  if (( ${_PROMPT_WIDTH:-0} != COLUMNS )); then
+    _build_responsive_prompt
+    # Refresh the welcome screen only while editing at the shell prompt.
+    # Clear the visible page, leaving terminal scrollback intact.
+    if [[ ${_FASTFETCH_SHELL_SHOWN:-0} == 1 ]]; then
+      zle -I
+      printf '\033[H\033[2J'
+      fastfetch
+    fi
+    zle reset-prompt
+  fi
+}
 autoload -Uz add-zle-hook-widget
 add-zle-hook-widget -d line-pre-redraw _prompt_resize_redraw 2>/dev/null
-unfunction _prompt_resize_redraw 2>/dev/null
+add-zle-hook-widget line-pre-redraw _prompt_resize_redraw
+
+# Size-aware Fastfetch, also refreshed by the idle prompt resize hook.
+fastfetch() {
+  if (( $# )); then
+    command fastfetch "$@"
+  else
+    command python3 "$HOME/.config/fastfetch/responsive.py" "${COLUMNS:-80}" "${LINES:-24}"
+  fi
+}
 
 
 setopt APPEND_HISTORY SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST INC_APPEND_HISTORY
@@ -158,30 +187,12 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 _fastfetch_startup() {
   add-zsh-hook -d precmd _fastfetch_startup
   [[ -t 1 && $TERM == xterm-kitty && -z $SSH_CONNECTION ]] || return 0
-  [[ ${KITTY_WINDOW_ID:-1} == 1 ]] || return 0
   [[ ${FASTFETCH_SHOWN_WINDOW:-} != "${KITTY_PID:-kitty}:${KITTY_WINDOW_ID:-1}" ]] || return 0
   [[ ${_FASTFETCH_SHELL_SHOWN:-0} == 0 ]] || return 0
-  (( COLUMNS >= 110 && LINES >= 30 )) || return 0
   (( $+commands[fastfetch] )) || return 0
-  # A new Kitty process starts with window ID 1 too. Ask Hyprland about
-  # workspace neighbours instead of trusting the initial terminal dimensions.
-  if [[ -n $HYPRLAND_INSTANCE_SIGNATURE ]]; then
-    (( $+commands[hyprctl] && $+commands[jq] )) || return 0
-    local clients
-    clients=$(command hyprctl -j clients 2>/dev/null) || return 0
-    print -r -- "$clients" | command jq -e --argjson pid "${KITTY_PID:-0}" '
-      . as $clients
-      | [ .[] | select(.pid == $pid and (.class | ascii_downcase) == "kitty") ] as $own
-      | if ($own | length) != 1 then false
-        else $own[0].workspace.id as $workspace
-        | [ $clients[] | select(.workspace.id == $workspace
-            and (.class | ascii_downcase) == "kitty") ] | length == 1
-        end
-    ' >/dev/null 2>&1 || return 0
-  fi
   typeset -g _FASTFETCH_SHELL_SHOWN=1
   export FASTFETCH_SHOWN_WINDOW="${KITTY_PID:-kitty}:${KITTY_WINDOW_ID:-1}"
-  command fastfetch
+  fastfetch
 }
 # A local marker avoids repeating Fastfetch when sourcing this file.
 (( ${_FASTFETCH_SHELL_SHOWN:-0} )) || add-zsh-hook precmd _fastfetch_startup
