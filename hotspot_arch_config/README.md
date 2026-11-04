@@ -29,11 +29,12 @@ On this machine the existing UserModules configuration is already installed.
 
 ## Controls
 
-- Super+F or left-click the Waybar hotspot module: open settings.
+- Super+F: open settings; press again to close any hotspot dialog.
+- Left-click the Waybar hotspot module: open settings.
 - Right-click: toggle hotspot.
 - Connection details: Show password / Hide password.
 - Change password: Alt+S toggles visibility while preserving typed text.
-- Enter saves/selects; Esc cancels/closes.
+- Enter saves/selects; Esc closes any hotspot dialog.
 - Name/password updates apply the next time the hotspot is started.
 
 The first menu launch creates `Waybar-Hotspot` with a random password and

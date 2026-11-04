@@ -19,9 +19,9 @@ def notify(message):
 
 def prompt(title, options=None, password=False, message=None, initial=None):
     args = ['rofi', '-no-config', '-theme', str(Path(__file__).with_name('hotspot.rasi')),
-            '-dmenu', '-i', '-p', title]
+            '-dmenu', '-i', '-kb-cancel', 'Escape,Super+f', '-p', title]
     if options:
-        args += ['-only-match', '-no-custom']
+        args += ['-no-custom']
     else:
         args += ['-theme-str', 'mainbox { children: [ inputbar, message ]; }']
     if message:
@@ -33,13 +33,15 @@ def prompt(title, options=None, password=False, message=None, initial=None):
     p = subprocess.run(args, input='\n'.join(options or []), text=True, capture_output=True)
     if p.returncode not in (0, 1) and p.stderr:
         notify(p.stderr.strip())
+    if p.returncode == 1:
+        raise SystemExit(0)
     return p.stdout.strip() if p.returncode == 0 else None
 
 def password_prompt(title, message):
     visible, value = False, ''
     while True:
         args = ['rofi', '-no-config', '-theme', str(Path(__file__).with_name('hotspot.rasi')),
-                '-dmenu', '-p', title, '-kb-custom-1', 'Alt+s', '-filter', value,
+                '-dmenu', '-kb-cancel', 'Escape,Super+f', '-p', title, '-kb-custom-1', 'Alt+s', '-filter', value,
                 '-theme-str', 'mainbox { children: [ inputbar, message ]; }',
                 '-mesg', (message or '') + '\nAlt+S: ' + ('hide' if visible else 'show') + ' password']
         if not visible:
@@ -49,6 +51,8 @@ def password_prompt(title, message):
         if p.returncode == 10:
             visible = not visible
             continue
+        if p.returncode == 1:
+            raise SystemExit(0)
         return value if p.returncode == 0 else None
 
 def exists():
