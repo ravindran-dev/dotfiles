@@ -182,6 +182,22 @@ _fastfetch_startup() {
   [[ ${_FASTFETCH_SHELL_SHOWN:-0} == 0 ]] || return 0
   (( COLUMNS >= 110 && LINES >= 30 )) || return 0
   (( $+commands[fastfetch] )) || return 0
+  # A new Kitty process starts with window ID 1 too. Ask Hyprland about
+  # workspace neighbours instead of trusting the initial terminal dimensions.
+  if [[ -n $HYPRLAND_INSTANCE_SIGNATURE ]]; then
+    (( $+commands[hyprctl] && $+commands[jq] )) || return 0
+    local clients
+    clients=$(command hyprctl -j clients 2>/dev/null) || return 0
+    print -r -- "$clients" | command jq -e --argjson pid "${KITTY_PID:-0}" '
+      . as $clients
+      | [ .[] | select(.pid == $pid and (.class | ascii_downcase) == "kitty") ] as $own
+      | if ($own | length) != 1 then false
+        else $own[0].workspace.id as $workspace
+        | [ $clients[] | select(.workspace.id == $workspace
+            and (.class | ascii_downcase) == "kitty") ] | length == 1
+        end
+    ' >/dev/null 2>&1 || return 0
+  fi
   typeset -g _FASTFETCH_SHELL_SHOWN=1
   export FASTFETCH_SHOWN_WINDOW="${KITTY_PID:-kitty}:${KITTY_WINDOW_ID:-1}"
   command fastfetch
