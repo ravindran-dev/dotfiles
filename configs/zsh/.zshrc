@@ -83,10 +83,10 @@ git_prompt() {
   print -r -- "$result"
 }
 
-# Keep the same compact shape in every tile. Zsh evaluates the width condition
-# on each redraw, so resizing does not depend on a cached COLUMNS value.
+# Keep the same compact shape in every tile, without cached width decisions.
+# Limit the directory label to six columns so even narrow tiles stay aligned.
 _build_responsive_prompt() {
-  PROMPT='%F{117}%(20l.%12<…<%1~%<<.%(12l.%5<…<%1~%<<.))%f %(?.%F{120}.%F{203})❯%f '
+  PROMPT='%F{117}%6<…<%1~%<<%f %(?.%F{120}.%F{203})❯%f '
   RPROMPT=''
 }
 
