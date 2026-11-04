@@ -33,6 +33,15 @@ for suffix, line in (
     if target.exists() and line not in target.read_text():
         shutil.copy2(target, backup / target.name)
         target.write_text(target.read_text() + '\n' + line + '\n')
+# Prevent compositor blur from filling transparent rounded corners.
+for suffix, rule in (
+    ('conf', 'layerrule = match:namespace rofi, ignore_alpha 0.5'),
+    ('lua', 'hl.layer_rule({ ignore_alpha = 0.5, match = { namespace = "rofi" } })'),
+):
+    target = home / ('.config/hypr/UserConfigs/WindowRules.' + suffix)
+    if target.exists() and rule not in target.read_text():
+        shutil.copy2(target, backup / target.name)
+        target.write_text(target.read_text() + '\n' + rule + '\n')
 print('Installed. Backups:', backup)
 print('Waybar: include $HOME/.config/waybar/HotspotModule and add custom/hotspot to modules-right.')
 print('If custom/hotspot already exists in UserModules, keep that existing definition instead.')

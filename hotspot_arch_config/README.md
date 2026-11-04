@@ -60,3 +60,9 @@ NetworkManager also needs its DHCP/DNS helper for IPv4 shared mode.
 Edit `hotspot.py` and `hotspot.rasi` here, rerun `python3 install.py`, and reload
 Waybar. Never commit NetworkManager connection files, saved passwords or exported
 secrets. The installer does not export or replace existing network profiles.
+
+## Rounded corners
+
+The installer adds a Rofi layer rule with `ignore_alpha = 0.5` (Lua) or
+`ignore_alpha 0.5` (conf). This prevents Hyprland blur from drawing a rectangular
+backdrop through the transparent corners. The rule applies to all Rofi menus.
