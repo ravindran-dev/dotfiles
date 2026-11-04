@@ -106,13 +106,6 @@ precmd() {
 _prompt_resize_redraw() {
   if (( ${_PROMPT_WIDTH:-0} != COLUMNS )); then
     _build_responsive_prompt
-    # Refresh the welcome screen only while editing at the shell prompt.
-    # Clear the visible page, leaving terminal scrollback intact.
-    if [[ ${_FASTFETCH_SHELL_SHOWN:-0} == 1 ]]; then
-      zle -I
-      printf '\033[H\033[2J'
-      fastfetch
-    fi
     zle reset-prompt
   fi
 }
@@ -120,14 +113,8 @@ autoload -Uz add-zle-hook-widget
 add-zle-hook-widget -d line-pre-redraw _prompt_resize_redraw 2>/dev/null
 add-zle-hook-widget line-pre-redraw _prompt_resize_redraw
 
-# Size-aware Fastfetch, also refreshed by the idle prompt resize hook.
-fastfetch() {
-  if (( $# )); then
-    command fastfetch "$@"
-  else
-    command python3 "$HOME/.config/fastfetch/responsive.py" "${COLUMNS:-80}" "${LINES:-24}"
-  fi
-}
+# Remove the previous size-aware wrapper when sourcing this file.
+unfunction fastfetch 2>/dev/null
 
 
 setopt APPEND_HISTORY SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST INC_APPEND_HISTORY
@@ -187,12 +174,30 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 _fastfetch_startup() {
   add-zsh-hook -d precmd _fastfetch_startup
   [[ -t 1 && $TERM == xterm-kitty && -z $SSH_CONNECTION ]] || return 0
+  [[ ${KITTY_WINDOW_ID:-1} == 1 ]] || return 0
   [[ ${FASTFETCH_SHOWN_WINDOW:-} != "${KITTY_PID:-kitty}:${KITTY_WINDOW_ID:-1}" ]] || return 0
   [[ ${_FASTFETCH_SHELL_SHOWN:-0} == 0 ]] || return 0
+  (( COLUMNS >= 110 && LINES >= 30 )) || return 0
   (( $+commands[fastfetch] )) || return 0
+  # A new Kitty process starts with window ID 1 too. Ask Hyprland about
+  # workspace neighbours instead of trusting the initial terminal dimensions.
+  if [[ -n $HYPRLAND_INSTANCE_SIGNATURE ]]; then
+    (( $+commands[hyprctl] && $+commands[jq] )) || return 0
+    local clients
+    clients=$(command hyprctl -j clients 2>/dev/null) || return 0
+    print -r -- "$clients" | command jq -e --argjson pid "${KITTY_PID:-0}" '
+      . as $clients
+      | [ .[] | select(.pid == $pid and (.class | ascii_downcase) == "kitty") ] as $own
+      | if ($own | length) != 1 then false
+        else $own[0].workspace.id as $workspace
+        | [ $clients[] | select(.workspace.id == $workspace
+            and (.class | ascii_downcase) == "kitty") ] | length == 1
+        end
+    ' >/dev/null 2>&1 || return 0
+  fi
   typeset -g _FASTFETCH_SHELL_SHOWN=1
   export FASTFETCH_SHOWN_WINDOW="${KITTY_PID:-kitty}:${KITTY_WINDOW_ID:-1}"
-  fastfetch
+  command fastfetch
 }
 # A local marker avoids repeating Fastfetch when sourcing this file.
 (( ${_FASTFETCH_SHELL_SHOWN:-0} )) || add-zsh-hook precmd _fastfetch_startup
