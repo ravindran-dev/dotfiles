@@ -9,15 +9,21 @@ source = Path(__file__).resolve().parent
 home = Path.home()
 waybar = home / '.config/waybar'
 scripts = waybar / 'scripts'
+rofi = home / '.config/rofi'
 backup = waybar / 'backups' / ('hotspot-install-' + datetime.now().strftime('%Y%m%d-%H%M%S'))
 backup.mkdir(parents=True)
 scripts.mkdir(parents=True, exist_ok=True)
-for name in ('hotspot.py', 'hotspot.rasi'):
+for name in ('hotspot.py',):
     target = scripts / name
     if target.exists():
         shutil.copy2(target, backup / name)
     shutil.copy2(source / name, target)
 (scripts / 'hotspot.py').chmod(0o755)
+rofi.mkdir(parents=True, exist_ok=True)
+theme_target = rofi / 'hotspot.rasi'
+if theme_target.exists():
+    shutil.copy2(theme_target, backup / 'hotspot.rasi')
+shutil.copy2(source / 'hotspot.rasi', theme_target)
 module = {
     'exec': '$HOME/.config/waybar/scripts/hotspot.py status',
     'return-type': 'json', 'interval': 5, 'format': '{}', 'tooltip': True,
@@ -37,6 +43,8 @@ for suffix, line in (
 for suffix, rule in (
     ('conf', 'layerrule = match:namespace rofi, ignore_alpha 0.5'),
     ('lua', 'hl.layer_rule({ ignore_alpha = 0.5, match = { namespace = "rofi" } })'),
+    ('conf', 'layerrule = match:namespace rofi, blur'),
+    ('lua', 'hl.layer_rule({ blur = true, match = { namespace = "rofi" } })'),
 ):
     target = home / ('.config/hypr/UserConfigs/WindowRules.' + suffix)
     if target.exists() and rule not in target.read_text():

@@ -1,26 +1,54 @@
 * {
-    font: "JetBrainsMono Nerd Font 11";
+    font: "JetBrainsMono Nerd Font 10.5";
     background-color: transparent;
-    text-color: #cdd6f4;
-    border-color: #45475a;
+    text-color: #7c8194;
+    border-color: rgba(255, 255, 255, 0.08);
 }
+
 window {
-    width: 510px;
+    width: 400px;
     location: center;
     anchor: center;
-    background-color: #1e1e2e;
-    border: 2px;
-    border-radius: 20px;
-    padding: 24px;
+    background-color: rgba(18, 19, 24, 0.92);
+    border: 1px;
+    border-color: rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 18px;
 }
-mainbox { children: [ inputbar, message, listview ]; spacing: 16px; }
-inputbar { children: [ prompt, entry ]; spacing: 12px; padding: 4px 2px 12px; }
-prompt { text-color: #89b4fa; font: "JetBrainsMono Nerd Font Bold 14"; }
-entry { placeholder: ""; text-color: #cdd6f4; }
-message { padding: 12px 14px; background-color: #181825; border-radius: 10px; }
-textbox { text-color: #a6adc8; }
-listview { lines: 4; columns: 1; fixed-height: false; dynamic: true; spacing: 6px; scrollbar: false; }
-element { padding: 14px; border-radius: 10px; children: [ element-text ]; }
-element-text { vertical-align: 0.5; }
-element selected.normal { background-color: #313244; text-color: #89b4fa; }
-element-text selected.normal { text-color: inherit; }
+
+mainbox { children: [ inputbar, message, listview ]; spacing: 12px; }
+inputbar { children: [ prompt ]; padding: 2px 4px 5px; }
+prompt { text-color: #e2e4ec; font: "JetBrainsMono Nerd Font SemiBold 12"; }
+entry { placeholder: ""; }
+
+message {
+    padding: 12px 14px;
+    background-color: #16171d;
+    border: 1px;
+    border-color: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+}
+textbox { text-color: #a4a9b8; }
+
+listview {
+    lines: 6;
+    columns: 1;
+    fixed-height: false;
+    dynamic: true;
+    spacing: 4px;
+    scrollbar: false;
+}
+element {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px;
+    border-color: transparent;
+    children: [ element-text ];
+}
+element-text { vertical-align: 0.5; text-color: #7c8194; }
+element selected.normal {
+    background-color: #2c303d;
+    border-color: rgba(255, 255, 255, 0.16);
+    text-color: #e2e4ec;
+}
+element-text selected.normal { text-color: #e2e4ec; }
