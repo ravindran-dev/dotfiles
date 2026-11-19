@@ -1,53 +1,46 @@
-<p align="center">
-  <img src="iron2.png" width="130" height="130" alt="Arch Linux Setup" style="border-radius: 50%;" />
-</p>
+# Arch Linux Dotfiles & Workstation Environment
 
-<h1 align="center">⚡ Arch Linux Dotfiles & Workstation Environment</h1>
+A minimalist, high-performance workstation configuration featuring Hyprland, Waybar, Zsh, Kitty, and automated provisioning.
 
-<p align="center">
-  <em>A high-performance, minimalist workstation configuration featuring Hyprland, Waybar, Zsh, Kitty, and automated cross-distro provisioning.</em>
-</p>
-
-<p align="center">
-  <a href="https://archlinux.org"><img src="https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white" alt="Arch Linux" /></a>
-  <a href="https://hyprland.org"><img src="https://img.shields.io/badge/Hyprland-00AAEE?style=for-the-badge&logo=wayland&logoColor=white" alt="Hyprland" /></a>
-  <a href="https://github.com/Alexays/Waybar"><img src="https://img.shields.io/badge/Waybar-2E3440?style=for-the-badge&logo=linux&logoColor=white" alt="Waybar" /></a>
-  <a href="https://www.zsh.org"><img src="https://img.shields.io/badge/Zsh-F15A24?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="Zsh" /></a>
-  <a href="https://sw.kovidgoyal.net/kitty/"><img src="https://img.shields.io/badge/Kitty-111111?style=for-the-badge&logo=kitty&logoColor=white" alt="Kitty" /></a>
-  <a href="https://www.python.org"><img src="https://img.shields.io/badge/Python_3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge" alt="License" /></a>
-</p>
+[![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://archlinux.org)
+[![Hyprland](https://img.shields.io/badge/Hyprland-00AAEE?style=for-the-badge&logo=wayland&logoColor=white)](https://hyprland.org)
+[![Waybar](https://img.shields.io/badge/Waybar-2E3440?style=for-the-badge&logo=linux&logoColor=white)](https://github.com/Alexays/Waybar)
+[![Zsh](https://img.shields.io/badge/Zsh-F15A24?style=for-the-badge&logo=gnu-bash&logoColor=white)](https://www.zsh.org)
+[![Kitty](https://img.shields.io/badge/Kitty-111111?style=for-the-badge&logo=kitty&logoColor=white)](https://sw.kovidgoyal.net/kitty/)
+[![Python](https://img.shields.io/badge/Python_3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [Overview](#-overview)
-- [Repository Structure](#-repository-structure)
-- [Key Modules & Features](#-key-modules--features)
-  - [1. Hyprland & Waybar Wi-Fi Hotspot Suite](#1--hyprland--waybar-wi-fi-hotspot-suite-hotspot)
-  - [2. Zsh Shell Environment](#2--zsh-shell-environment-zsh)
-  - [3. Kitty Terminal & Fastfetch](#3--kitty-terminal--fastfetch-configs)
-  - [4. Automated Setup Script](#4--automated-setup-script-autosetupsh)
-  - [5. ChatGPT in Terminal](#5--chatgpt-in-terminal-chatpy)
-- [Quick Start & Installation](#-quick-start--installation)
-- [Keybindings Reference](#-keybindings-reference)
-- [Author & Socials](#-author)
-
----
-
-## 🔍 Overview
-
-This repository contains my personal, battle-tested system dotfiles for Arch Linux. Designed for speed, developer ergonomics, and visual elegance, it provides:
-
-- **Automated Provisioning**: One script (`autosetup.sh`) to restore your complete developer workstation from a fresh installation.
-- **Rofi + Waybar Hotspot Manager**: Native Linux hotspot suite with hardened WPA2-AES security, Protected Management Frames (802.11w), client management, and real-time Waybar status.
-- **Optimized Shell Experience**: Low-latency Zsh environment with autosuggestions, syntax highlighting, customized GNU dircolors, and smart completions.
-- **Modern CLI Stack**: Integrated `bat`, `fzf`, `zoxide`, `fastfetch`, and custom AI terminal tooling.
+- [Overview](#overview)
+- [Repository Structure](#repository-structure)
+- [Modules & Configuration](#modules--configuration)
+  - [Wi-Fi Hotspot Suite (`hotspot/`)](#1-wi-fi-hotspot-suite-hotspot)
+  - [Zsh Shell Environment (`zsh/`)](#2-zsh-shell-environment-zsh)
+  - [Kitty Terminal & Fastfetch (`configs/`)](#3-kitty-terminal--fastfetch-configs)
+  - [Automated System Setup (`autosetup.sh`)](#4-automated-system-setup-autosetupsh)
+  - [Terminal ChatGPT Assistant (`chat.py`)](#5-terminal-chatgpt-assistant-chatpy)
+- [Installation & Setup](#installation--setup)
+- [Keybindings Reference](#keybindings-reference)
+- [Author & Connect](#author--connect)
+- [License](#license)
 
 ---
 
-## 📂 Repository Structure
+## Overview
+
+This repository maintains a streamlined, production-grade Arch Linux development setup. It focuses on clean typography, keyboard-driven navigation, low latency, and deterministic system provisioning.
+
+- **Automated Workstation Setup**: End-to-end bootstrapping script (`autosetup.sh`) for Arch Linux, Ubuntu, and Debian.
+- **Integrated Hotspot Manager**: Standalone Rofi UI and NetworkManager automation with hardened WPA2-AES security, Protected Management Frames (802.11w), client tracking, and Waybar integration.
+- **Productive Shell Architecture**: Optimized Zsh setup with autosuggestions, syntax highlighting, customized dircolors, and minimal git status prompt.
+- **Modern CLI Stack**: Curated configuration for `bat`, `fzf`, `zoxide`, `fastfetch`, and AI-assisted terminal workflows.
+
+---
+
+## Repository Structure
 
 ```plaintext
 dotfiles/
@@ -71,79 +64,69 @@ dotfiles/
 
 ---
 
-## 🚀 Key Modules & Features
+## Modules & Configuration
 
-### 1. 󰤨 Hyprland & Waybar Wi-Fi Hotspot Suite (`hotspot/`)
+### 1. Wi-Fi Hotspot Suite (`hotspot/`)
 
-A native, interactive Wi-Fi hotspot management system tailored for Waybar and Hyprland desktops:
+An interactive hotspot controller designed for Waybar and Hyprland desktops:
 
-- **Hardened Security**: Pre-configured with **WPA2-AES (CCMP)** and **PMF (802.11w)** to eliminate iOS / Apple *"Weak Security"* warnings and ensure instant connection.
-- **Matte Rofi Menu (`Super + F`)**: Clean dialog for starting/stopping the AP, viewing or generating credentials, and monitoring clients.
-- **Live Status Indicator**: Waybar module displaying active connection state with one-click toggling.
-- **Device Management**: SQLite session logging, real-time client traffic stats, and firewall-level device blacklisting.
-- **Zero Secrets in Git**: Random passwords handled securely via NetworkManager with no credentials committed.
+- **Hardened Wireless Security**: Uses **WPA2-AES (CCMP)** with **PMF (802.11w)** and a fixed 2.4 GHz channel to prevent iOS *"Weak Security"* warnings and ensure instant discovery across Apple and Android devices.
+- **Keyboard-Driven Menu (`Super + F`)**: Clean Rofi interface to start, stop, view credentials, and monitor connected devices.
+- **Waybar Integration**: Live status icon with single-click toggle and menu actions.
+- **Session & Device Auditing**: SQLite database logging client connections, live bandwidth usage, and firewall-level device blocking.
+- **Security-First**: Passwords remain managed by NetworkManager and are never stored in version control.
 
----
+### 2. Zsh Shell Environment (`zsh/`)
 
-### 2. ⚡ Zsh Shell Environment (`zsh/`)
+Engineered for instant shell load times and fluid command execution:
 
-Crafted for immediate responsiveness and developer ergonomics:
+- **Minimal Latency**: Pure Zsh configuration without sluggish framework overhead.
+- **Dircolors Tuning**: Eliminates jarring background highlight boxes on world-writable directories.
+- **Dynamic Git Status**: Real-time git branch indicator showing staged, modified, and untracked file states.
+- **Smart Completion & History**: Case-insensitive autocompletions and substring history search using arrow keys.
+- **Developer Aliases**: Standardized shortcuts for Git workflows, package management (`update`), and file viewing (`bat`).
 
-- **Instant Startup**: Lightweight configuration without bloated framework overhead.
-- **Intelligent Autocompletion**: Case-insensitive matcher, cached completion engine, and arrow-key history search.
-- **Syntax Highlighting & Autosuggestions**: Real-time feedback with fish-like command history autosuggestions.
-- **Clean Dircolors**: Custom highlight mechanism eliminating unreadable bright green backgrounds on `other-writable` directories.
-- **Dynamic Git Prompt**: Minimal prompt displaying current branch, dirty state, staged changes, and execution status.
-- **Smart Aliases**: Pre-mapped shortcuts for Git, system maintenance, image previewing, and modern CLI tools (`bat`, `cls`, `update`).
+### 3. Kitty Terminal & Fastfetch (`configs/`)
 
----
+- **GPU Acceleration**: High-frame-rate rendering, smooth cursor trail, and truecolor support.
+- **Visual Polish**: 90% background opacity, clean padding, and `FantasqueSansM Nerd Font Mono` typography.
+- **Fastfetch Layouts**: Modular configurations offering both full hardware diagnostics and compact shell banners.
 
-### 3. 🐱 Kitty Terminal & Fastfetch (`configs/`)
+### 4. Automated System Setup (`autosetup.sh`)
 
-- **GPU Acceleration**: Fluid scrolling, minimal latency, and full 24-bit truecolor rendering.
-- **Custom Typography**: Configured with `FantasqueSansM Nerd Font Mono` with smooth cursor trails and subtle background opacity (0.9).
-- **Fastfetch Dual Modes**: Includes both full hardware readout and a compact mode for quick shell startup.
+An idempotent shell script that provisions a complete development workstation:
 
----
+- **Multi-Distro Engine**: Autodetects **Arch Linux**, **Ubuntu**, and **Debian**.
+- **Toolchain Installation**: Installs Rust/Cargo, base development toolchains, and AUR helpers (`paru`, `yay`).
+- **Development Tooling**: Provisions `neovim`, `zsh`, `bat`, `fzf`, `zoxide`, `fastfetch`, and modern CLI utilities.
+- **Desktop Environments**: Installs VS Code, Brave, Google Chrome, Spotify, and required Nerd Fonts.
 
-### 4. ⚙️ Automated Setup Script (`autosetup.sh`)
+### 5. Terminal ChatGPT Assistant (`chat.py`)
 
-A robust, idempotent shell script that provisions a complete development workstation:
+A lightweight Python CLI client for OpenAI models:
 
-- **Multi-Distro Support**: Autodetects **Arch Linux**, **Ubuntu**, and **Debian**.
-- **Toolchain Bootstrap**: Builds Rust/Cargo, Git, base development packages, and AUR helpers (`paru`, `yay`).
-- **Core CLI Stack**: Installs `neovim`, `zsh`, `bat`, `fzf`, `zoxide`, `fastfetch`, and `eza`.
-- **Desktop & Browsers**: Sets up VS Code, Brave, Google Chrome, Spotify, and font packages (`ttf-meslo-nerd-font-powerlevel10k`).
-- **GitHub Integration**: Preconfigures GitHub CLI (`gh`) and prompts authentication.
-
----
-
-### 5. 🤖 ChatGPT in Terminal (`chat.py`)
-
-A clean Python terminal client for OpenAI's GPT models:
-
-- Context-aware conversation threads in your terminal.
-- Simple setup using your own OpenAI API key via `OPENAI_KEY` environment variable.
+- Interactive, context-aware command line chat.
+- Reads API key directly from the `OPENAI_KEY` environment variable.
 
 ---
 
-## 🛠️ Quick Start & Installation
+## Installation & Setup
 
-### Step 1: Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/ravindran-dev/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ```
 
-### Step 2: Run Full Automated Setup (Recommended for fresh systems)
+### 2. Run Full System Bootstrap (Fresh Install)
 
 ```bash
 chmod +x autosetup.sh
 ./autosetup.sh
 ```
 
-### Step 3: Install Hotspot Suite (Standalone)
+### 3. Standalone Hotspot Module Setup
 
 ```bash
 cd ~/dotfiles/hotspot
@@ -153,60 +136,44 @@ hyprctl reload
 pkill -SIGUSR2 -x waybar
 ```
 
-### Step 4: Deploy Zsh Configuration
+### 4. Deploy Zsh Configuration
 
 ```bash
-# Backup existing config
+# Backup existing configuration
 [ -f ~/.zshrc ] && mv ~/.zshrc ~/.zshrc.bak
 
-# Link dotfiles zsh config
+# Deploy dotfiles configuration
 cp ~/dotfiles/zsh/.zshrc ~/.zshrc
 source ~/.zshrc
 ```
 
 ---
 
-## ⌨️ Keybindings Reference
+## Keybindings Reference
 
 | Shortcut | Context | Action |
 | :--- | :--- | :--- |
-| `Super + F` | Global (Hyprland) | Open Hotspot Settings Menu / Toggle Dialog |
-| `Right Click` | Waybar Hotspot Icon | Instantly toggle Hotspot ON / OFF |
-| `Left Click` | Waybar Hotspot Icon | Open Hotspot GUI Menu |
-| `Alt + S` | Hotspot Password Dialog | Toggle Password Visibility (Show/Hide) |
-| `Ctrl + R` | Zsh | Fuzzy History Search (`fzf`) |
-| `Up / Down` | Zsh | History Prefix Navigation |
+| `Super + F` | Hyprland | Open Hotspot Settings Menu / Close Dialog |
+| `Right Click` | Waybar Hotspot | Toggle Hotspot ON / OFF |
+| `Left Click` | Waybar Hotspot | Open Hotspot GUI Menu |
+| `Alt + S` | Hotspot Password Dialog | Toggle Password Visibility |
+| `Ctrl + R` | Zsh Terminal | Fuzzy Command History Search (`fzf`) |
+| `Up / Down` | Zsh Terminal | History Prefix Search |
 
 ---
 
-## 👨‍💻 Author
+## Author & Connect
 
-<p align="center">
-  <img src="me.png" width="120" height="180" alt="Ravindran S" style="border-radius: 12px; object-fit: cover;" />
-</p>
+**Ravindran S**  
+*Software Development Engineer • Systems & Full-Stack Developer*
 
-<p align="center">
-  <strong>Ravindran S</strong><br />
-  <em>Software Development Engineer • Full-Stack Developer • Systems & ML Enthusiast</em>
-</p>
-
-<p align="center">
-  <a href="https://www.linkedin.com/in/ravindran-s-982702327" target="_blank">
-    <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-  </a>
-  <a href="https://github.com/ravindran-dev" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-111111?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
-  </a>
-  <a href="https://ravindran-dev.github.io" target="_blank">
-    <img src="https://img.shields.io/badge/Portfolio-2563EB?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
-  </a>
-  <a href="mailto:ravindrans.dev@gmail.com">
-    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail" />
-  </a>
-</p>
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ravindran-s-982702327)
+[![GitHub](https://img.shields.io/badge/GitHub-111111?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ravindran-dev)
+[![Portfolio](https://img.shields.io/badge/Portfolio-2563EB?style=for-the-badge&logo=google-chrome&logoColor=white)](https://ravindran-dev.github.io)
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ravindrans.dev@gmail.com)
 
 ---
 
-## 📄 License
+## License
 
-This repository is licensed under the [MIT License](LICENSE). Feel free to fork, adapt, and customize it to suit your workflow.
+This repository is licensed under the [MIT License](LICENSE).
