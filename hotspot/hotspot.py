@@ -78,7 +78,10 @@ def ensure():
         raise RuntimeError('No Wi-Fi adapter found.')
     nm('connection', 'add', 'type', 'wifi', 'ifname', wifi, 'con-name', PROFILE,
        'ssid', 'Ravi-Hotspot', '802-11-wireless.mode', 'ap',
-       '802-11-wireless.band', 'bg', 'wifi-sec.key-mgmt', 'wpa-psk',
+       '802-11-wireless.band', 'bg', '802-11-wireless.channel', '6',
+       'wifi-sec.key-mgmt', 'wpa-psk', 'wifi-sec.proto', 'rsn',
+       'wifi-sec.pairwise', 'ccmp', 'wifi-sec.group', 'ccmp',
+       'wifi-sec.pmf', 'optional',
        'wifi-sec.psk', secrets.token_urlsafe(12), 'ipv4.method', 'shared',
        'ipv6.method', 'disabled', 'connection.autoconnect', 'no')
 
