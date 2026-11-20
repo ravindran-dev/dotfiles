@@ -184,12 +184,11 @@
 	"window-rewrite": {
 		"class<open-whispr> title<.*[Cc]ontrol [Pp]anel.*>": "<span font_family='OpenWhisprFont'></span> ",
 		"title<.*[Cc]ontrol [Pp]anel.*>": "<span font_family='OpenWhisprFont'></span> ",
-		"title<.*[Oo]pen[Ww]hispr.*>": "<span font_family='OpenWhisprFont'></span> ",
 		"class<open-whispr> title<.*[Vv]oice [Rr]ecorder.*>": "",
 		"class<open-whispr> title<.*[Mm]eeting [Nn]otification.*>": "",
 		"title<.*[Vv]oice [Rr]ecorder.*>": "",
 		"title<.*[Mm]eeting [Nn]otification.*>": "",
-		"class<open-whispr>": "<span font_family='OpenWhisprFont'></span> ",
+		"class<open-whispr>": "",
 		"title<.*amazon.*>": " ",
 		"title<.*reddit.*>": " ",
 
