@@ -1,0 +1,13 @@
+// Waybar OpenWhispr image module definition
+// Location: ~/.config/waybar/UserModules
+
+{
+  "image#openwhispr": {
+    "path": "/home/ravi/.config/waybar/icons/openwhispr.svg",
+    "size": 18,
+    "interval": "once",
+    "tooltip": true,
+    "on-click": "dbus-send --session --type=method_call --dest=com.openwhispr.App /com/openwhispr/App com.openwhispr.App.Toggle",
+    "on-click-right": "/opt/openwhispr/open-whispr --no-sandbox"
+  }
+}

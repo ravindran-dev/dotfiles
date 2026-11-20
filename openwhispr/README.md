@@ -9,9 +9,10 @@ Custom configurations and fixes for running [OpenWhispr](https://openwhispr.com)
    - Hyprland default rules drew borders and resize grips (`⤡`) around the transparent rectangle.
    - **Fix**: Window rules remove borders (`border_size = 0`, `rounding = 0`), shadows, blur, and initial focus stealing (`no_initial_focus = true`), while ensuring the circular button retains full clickability.
 
-2. **Navbar Icon & Background Window Suppression**:
-   - By default, OpenWhispr's background overlay created broken question marks (`?`) or generic microphone icons in Waybar.
-   - **Fix**: Mapped OpenWhispr's GUI (`Control Panel`) to the official 3-bar waveform icon (`󰖁 `) and suppressed all background recorder windows from appearing on the navbar.
+2. **Official OpenWhispr Logo in Waybar**:
+   - Embedded the official OpenWhispr application SVG logo directly from the official repo (`src/assets/logo.svg`).
+   - Integrated as a clean `image#openwhispr` Waybar module with native D-Bus click actions (`Toggle` on left click, Control Panel on right click).
+   - Suppressed all background recorder windows and incorrect glyph representations from cluttering workspace tags.
 
 3. **Keybinding Integration**:
    - Added D-Bus method call keybinds in Hyprland (`SUPER + \`` for dictation toggle, `CTRL + SHIFT + SPACE` for voice agent toggle) via `com.openwhispr.App`.
@@ -27,8 +28,12 @@ openwhispr/
 │   ├── WindowRules.lua          # Lua window rules for Hyprland 0.57+
 │   └── openwhispr-binds.lua     # D-Bus keybindings for Hyprland
 ├── waybar/
+│   ├── icons/
+│   │   ├── openwhispr.svg       # Official SVG logo asset
+│   │   └── openwhispr.png       # High-quality PNG raster asset
+│   ├── UserModules.jsonc        # Waybar image module definition
 │   ├── Modules.jsonc            # Window title rewrite snippet
-│   └── ModulesWorkspaces.jsonc  # Workspace format-icon mapping snippet
+│   └── ModulesWorkspaces.jsonc  # Workspace suppression snippet
 ├── install.sh                   # Automated deployment script
 ├── open-whispr.env              # Environment config (~/.config/open-whispr/.env)
 └── README.md                    # Documentation
@@ -44,12 +49,6 @@ Run the automated installer:
 chmod +x install.sh
 ./install.sh
 ```
-
-Or manually copy:
-- `open-whispr.env` to `~/.config/open-whispr/.env`
-- `hypr/openwhispr-binds.lua` to `~/.config/hypr/openwhispr-binds.lua`
-- Append `hypr/WindowRules.lua` to `~/.config/hypr/UserConfigs/WindowRules.lua`
-- Add the Waybar icon rules from `waybar/` into your Waybar config.
 
 ---
 

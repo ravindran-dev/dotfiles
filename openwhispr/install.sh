@@ -18,7 +18,6 @@ echo "  ✓ Installed ~/.config/open-whispr/.env"
 mkdir -p "$CONFIG_DIR/hypr/UserConfigs"
 cp "$SCRIPT_DIR/hypr/openwhispr-binds.lua" "$CONFIG_DIR/hypr/openwhispr-binds.lua"
 
-# Ensure hyprland.lua loads the keybinds file
 if [ -f "$CONFIG_DIR/hypr/hyprland.lua" ]; then
     if ! grep -q "openwhispr-binds.lua" "$CONFIG_DIR/hypr/hyprland.lua"; then
         echo 'pcall(dofile, "/home/ravi/.config/hypr/openwhispr-binds.lua")' >> "$CONFIG_DIR/hypr/hyprland.lua"
@@ -40,7 +39,12 @@ if [ -f "$CONFIG_DIR/hypr/UserConfigs/WindowRules.conf" ]; then
 fi
 echo "  ✓ Installed Hyprland Window Rules"
 
-# 4. Reload Hyprland and Waybar if running
+# 4. Waybar Icons & Module
+mkdir -p "$CONFIG_DIR/waybar/icons"
+cp -r "$SCRIPT_DIR/waybar/icons/"* "$CONFIG_DIR/waybar/icons/"
+echo "  ✓ Installed Waybar official logo assets"
+
+# 5. Reload Hyprland and Waybar if running
 if command -v hyprctl >/dev/null 2>&1; then
     hyprctl reload || true
     echo "  ✓ Reloaded Hyprland"
