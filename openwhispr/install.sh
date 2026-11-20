@@ -44,15 +44,23 @@ mkdir -p "$CONFIG_DIR/waybar/icons"
 cp -r "$SCRIPT_DIR/waybar/icons/"* "$CONFIG_DIR/waybar/icons/"
 echo "  ✓ Installed Waybar official logo assets"
 
-# 5. Reload Hyprland and Waybar if running
+# 5. Waybar Custom OpenWhispr Font
+mkdir -p "$HOME/.local/share/fonts"
+cp -r "$SCRIPT_DIR/waybar/fonts/"* "$HOME/.local/share/fonts/"
+if command -v fc-cache >/dev/null 2>&1; then
+    fc-cache -fv "$HOME/.local/share/fonts/" >/dev/null 2>&1 || true
+    echo "  ✓ Installed OpenWhispr font and refreshed font cache"
+fi
+
+# 6. Reload Hyprland and Waybar if running
 if command -v hyprctl >/dev/null 2>&1; then
     hyprctl reload || true
     echo "  ✓ Reloaded Hyprland"
 fi
 
 if pgrep -x waybar >/dev/null 2>&1; then
-    killall -SIGUSR2 waybar || true
-    echo "  ✓ Reloaded Waybar"
+    pkill waybar && nohup waybar >/dev/null 2>&1 &
+    echo "  ✓ Restarted Waybar"
 fi
 
 echo "==> OpenWhispr integration installed successfully!"
