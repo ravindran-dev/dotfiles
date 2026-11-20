@@ -1,0 +1,15 @@
+// Waybar workspace configuration snippet
+// Location: ~/.config/waybar/ModulesWorkspaces
+//
+// Maps OpenWhispr Control Panel to the official 3-bar waveform icon (󰖁 )
+// while completely suppressing background Voice Recorder pills from showing on the bar.
+
+{
+  "hyprland/workspaces": {
+    "format-icons": {
+      "class<open-whispr> title<.*[Cc]ontrol [Pp]anel.*>": "󰖁 ",
+      "class<open-whispr> title<.*[Vv]oice [Rr]ecorder.*>": "",
+      "class<open-whispr>": ""
+    }
+  }
+}

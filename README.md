@@ -18,10 +18,11 @@ A minimalist, high-performance workstation configuration featuring Hyprland, Way
 - [Repository Structure](#repository-structure)
 - [Modules & Configuration](#modules--configuration)
   - [Wi-Fi Hotspot Suite (`hotspot/`)](#1-wi-fi-hotspot-suite-hotspot)
-  - [Zsh Shell Environment (`zsh/`)](#2-zsh-shell-environment-zsh)
-  - [Kitty Terminal & Fastfetch (`configs/`)](#3-kitty-terminal--fastfetch-configs)
-  - [Automated System Setup (`autosetup.sh`)](#4-automated-system-setup-autosetupsh)
-  - [Terminal ChatGPT Assistant (`chat.py`)](#5-terminal-chatgpt-assistant-chatpy)
+  - [OpenWhispr Voice Dictation Integration (`openwhispr/`)](#2-openwhispr-voice-dictation-integration-openwhispr)
+  - [Zsh Shell Environment (`zsh/`)](#3-zsh-shell-environment-zsh)
+  - [Kitty Terminal & Fastfetch (`configs/`)](#4-kitty-terminal--fastfetch-configs)
+  - [Automated System Setup (`autosetup.sh`)](#5-automated-system-setup-autosetupsh)
+  - [Terminal ChatGPT Assistant (`chat.py`)](#6-terminal-chatgpt-assistant-chatpy)
 - [Installation & Setup](#installation--setup)
 - [Keybindings Reference](#keybindings-reference)
 - [Author & Connect](#author--connect)
@@ -55,6 +56,12 @@ dotfiles/
 │   ├── hotspot.rasi      # Matte translucent Rofi popup theme
 │   ├── install.py        # Auto-installer for Hyprland/Waybar integration
 │   └── README.md         # Hotspot module documentation
+├── openwhispr/           # OpenWhispr voice dictation Hyprland & Waybar integration
+│   ├── hypr/             # D-Bus keybindings and window rules
+│   ├── waybar/           # Waybar icon and suppression snippets
+│   ├── open-whispr.env   # Environment variables configuration
+│   ├── install.sh        # Automated setup script
+│   └── README.md         # OpenWhispr module documentation
 ├── mirrorlist            # Curated, high-speed Arch Linux pacman mirrorlist
 ├── zsh/
 │   └── .zshrc            # Production Zsh configuration with custom prompt & hooks
@@ -76,7 +83,16 @@ An interactive hotspot controller designed for Waybar and Hyprland desktops:
 - **Session & Device Auditing**: SQLite database logging client connections, live bandwidth usage, and firewall-level device blocking.
 - **Security-First**: Passwords remain managed by NetworkManager and are never stored in version control.
 
-### 2. Zsh Shell Environment (`zsh/`)
+### 2. OpenWhispr Voice Dictation Integration (`openwhispr/`)
+
+Seamless integration for [OpenWhispr](https://openwhispr.com) voice dictation on Hyprland:
+
+- **Hyprland Window Rules**: Strips borders, shadows, and blur from the floating circular mic pill without sacrificing clickability or responsive states.
+- **Focus Preservation**: Prevents Hyprland (`follow_mouse = 1`) from stealing focus from active browser/editor windows.
+- **Waybar Polish**: Formats the Control Panel with the official 3-bar waveform icon (`󰖁 `) and suppresses background recorder pills from cluttering workspaces.
+- **Native D-Bus Keybinds**: Direct method calls via `com.openwhispr.App` for dictation (`SUPER + \``) and voice agent (`CTRL + SHIFT + SPACE`).
+
+### 3. Zsh Shell Environment (`zsh/`)
 
 Engineered for instant shell load times and fluid command execution:
 
@@ -86,13 +102,13 @@ Engineered for instant shell load times and fluid command execution:
 - **Smart Completion & History**: Case-insensitive autocompletions and substring history search using arrow keys.
 - **Developer Aliases**: Standardized shortcuts for Git workflows, package management (`update`), and file viewing (`bat`).
 
-### 3. Kitty Terminal & Fastfetch (`configs/`)
+### 4. Kitty Terminal & Fastfetch (`configs/`)
 
 - **GPU Acceleration**: High-frame-rate rendering, smooth cursor trail, and truecolor support.
 - **Visual Polish**: 90% background opacity, clean padding, and `FantasqueSansM Nerd Font Mono` typography.
 - **Fastfetch Layouts**: Modular configurations offering both full hardware diagnostics and compact shell banners.
 
-### 4. Automated System Setup (`autosetup.sh`)
+### 5. Automated System Setup (`autosetup.sh`)
 
 An idempotent shell script that provisions a complete development workstation:
 
@@ -101,7 +117,7 @@ An idempotent shell script that provisions a complete development workstation:
 - **Development Tooling**: Provisions `neovim`, `zsh`, `bat`, `fzf`, `zoxide`, `fastfetch`, and modern CLI utilities.
 - **Desktop Environments**: Installs VS Code, Brave, Google Chrome, Spotify, and required Nerd Fonts.
 
-### 5. Terminal ChatGPT Assistant (`chat.py`)
+### 6. Terminal ChatGPT Assistant (`chat.py`)
 
 A lightweight Python CLI client for OpenAI models:
 
@@ -154,6 +170,8 @@ source ~/.zshrc
 | Shortcut | Context | Action |
 | :--- | :--- | :--- |
 | `Super + F` | Hyprland | Open Hotspot Settings Menu / Close Dialog |
+| `Super + \`` | Hyprland | Toggle OpenWhispr Voice Dictation |
+| `Ctrl + Shift + Space` | Hyprland | Toggle OpenWhispr Voice Agent |
 | `Right Click` | Waybar Hotspot | Toggle Hotspot ON / OFF |
 | `Left Click` | Waybar Hotspot | Open Hotspot GUI Menu |
 | `Alt + S` | Hotspot Password Dialog | Toggle Password Visibility |

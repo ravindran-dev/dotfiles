@@ -1,0 +1,14 @@
+// Waybar active window title rewrite snippet
+// Location: ~/.config/waybar/Modules
+//
+// Formats Control Panel title cleanly with the waveform icon and hides Voice Recorder title.
+
+{
+  "hyprland/window": {
+    "rewrite": {
+      "(.*) - [Cc]ontrol [Pp]anel": "󰖁 OpenWhispr",
+      "[Cc]ontrol [Pp]anel": "󰖁 OpenWhispr",
+      "(.*)[Vv]oice [Rr]ecorder(.*)": ""
+    }
+  }
+}
